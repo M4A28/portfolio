@@ -13,7 +13,13 @@ export default function Contact({ lang }: { lang: Lang }) {
   const close = useCallback(() => setToast(null), [])
   const submit = async (e: FormEvent) => {
     e.preventDefault()
-    const invalid = (Object.keys(f) as Key[]).filter(k => k === 'email' ? !/^\S+@\S+\.\S+$/.test(f.email.trim()) : k === 'message' ? f.message.trim().length < 10 : f[k].trim().length < 2)
+    const invalid = (Object.keys(f) as Key[]).filter(k =>
+  k === 'email'
+    ? !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())
+    : k === 'message'
+      ? f.message.trim().length < 10
+      : f[k].trim().length < 2
+)
     setBad(invalid)
     if (invalid.length) return setToast({ msg: c.error, kind: 'err' })
     setBusy(true)
