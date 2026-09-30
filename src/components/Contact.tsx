@@ -44,19 +44,19 @@ export default function Contact({ lang }: { lang: Lang }) {
     const message = f.message.trim()
 
     /*
-     * Same validation as the old website.
-     * Only check that all fields are filled.
+     * نفس طريقة الموقع القديم:
+     * فقط التأكد من أن جميع الحقول ممتلئة.
      */
-    const invalid: Key[] = []
+    if (!name || !email || !subject || !message) {
+      const invalid: Key[] = []
 
-    if (!name) invalid.push('name')
-    if (!email) invalid.push('email')
-    if (!subject) invalid.push('subject')
-    if (!message) invalid.push('message')
+      if (!name) invalid.push('name')
+      if (!email) invalid.push('email')
+      if (!subject) invalid.push('subject')
+      if (!message) invalid.push('message')
 
-    setBad(invalid)
+      setBad(invalid)
 
-    if (invalid.length > 0) {
       setToast({
         msg: c.error,
         kind: 'err',
@@ -65,11 +65,12 @@ export default function Contact({ lang }: { lang: Lang }) {
       return
     }
 
+    setBad([])
     setBusy(true)
 
     try {
       /*
-       * Same FormSubmit AJAX endpoint used by the old website.
+       * نفس FormSubmit المستخدم في الموقع القديم بالضبط.
        */
       const response = await fetch(
         'https://formsubmit.co/ajax/mohammed.mosa.eg@gmail.com',
@@ -88,24 +89,24 @@ export default function Contact({ lang }: { lang: Lang }) {
         }
       )
 
-      const data = await response.json()
-
-      if (!response.ok || data.success === false) {
-        throw new Error('FormSubmit request failed')
-      }
+      /*
+       * الموقع القديم كان يعتبر وصول الاستجابة نجاحًا.
+       * لا نضيف validation إضافي على response.
+       */
+      await response.json()
 
       setF(empty)
-      setBad([])
 
       setToast({
         msg: c.success,
         kind: 'ok',
       })
-    } catch (error) {
-      console.error('Contact form error:', error)
-
+    } catch {
       setToast({
-        msg: c.error,
+        msg:
+          lang === 'ar'
+            ? 'حدث خطأ أثناء الإرسال.'
+            : 'Error sending message.',
         kind: 'err',
       })
     } finally {
@@ -211,7 +212,7 @@ export default function Contact({ lang }: { lang: Lang }) {
               ) : (
                 <input
                   id={`f-${k}`}
-                  type={k === 'email' ? 'email' : 'text'}
+                  type="text"
                   dir={k === 'email' ? 'ltr' : undefined}
                   value={f[k]}
                   placeholder={c.placeholders[k]}
