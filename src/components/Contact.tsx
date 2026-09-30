@@ -1,10 +1,14 @@
 
 import { useState, useCallback, type FormEvent } from 'react'
+
 import { Mail, Phone } from 'lucide-react'
+
 import { FaWhatsapp, FaLinkedinIn, FaGithub } from 'react-icons/fa6'
 
 import { content, more, type Lang } from '../content'
+
 import Section from './Section'
+
 import Toast, { type ToastState } from './Toast'
 
 const empty = {
@@ -34,18 +38,21 @@ export default function Contact({ lang }: { lang: Lang }) {
   const submit = async (e: FormEvent) => {
     e.preventDefault()
 
-    /*
-     * Validate fields.
-     * Name, subject and message must not be empty.
-     * Email must have a valid basic email format.
-     */
-    const invalid = (Object.keys(f) as Key[]).filter((k) => {
-      if (k === 'email') {
-        return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())
-      }
+    const name = f.name.trim()
+    const email = f.email.trim()
+    const subject = f.subject.trim()
+    const message = f.message.trim()
 
-      return !f[k].trim()
-    })
+    /*
+     * Same validation as the old website.
+     * Only check that all fields are filled.
+     */
+    const invalid: Key[] = []
+
+    if (!name) invalid.push('name')
+    if (!email) invalid.push('email')
+    if (!subject) invalid.push('subject')
+    if (!message) invalid.push('message')
 
     setBad(invalid)
 
@@ -54,6 +61,7 @@ export default function Contact({ lang }: { lang: Lang }) {
         msg: c.error,
         kind: 'err',
       })
+
       return
     }
 
@@ -61,7 +69,7 @@ export default function Contact({ lang }: { lang: Lang }) {
 
     try {
       /*
-       * FormSubmit endpoint used by the old website.
+       * Same FormSubmit AJAX endpoint used by the old website.
        */
       const response = await fetch(
         'https://formsubmit.co/ajax/mohammed.mosa.eg@gmail.com',
@@ -72,10 +80,10 @@ export default function Contact({ lang }: { lang: Lang }) {
             Accept: 'application/json',
           },
           body: JSON.stringify({
-            name: f.name.trim(),
-            email: f.email.trim(),
-            subject: f.subject.trim(),
-            message: f.message.trim(),
+            name,
+            email,
+            subject,
+            message,
           }),
         }
       )
@@ -83,7 +91,7 @@ export default function Contact({ lang }: { lang: Lang }) {
       const data = await response.json()
 
       if (!response.ok || data.success === false) {
-        throw new Error('Failed to send message')
+        throw new Error('FormSubmit request failed')
       }
 
       setF(empty)
@@ -93,7 +101,9 @@ export default function Contact({ lang }: { lang: Lang }) {
         msg: c.success,
         kind: 'ok',
       })
-    } catch {
+    } catch (error) {
+      console.error('Contact form error:', error)
+
       setToast({
         msg: c.error,
         kind: 'err',
@@ -139,7 +149,9 @@ export default function Contact({ lang }: { lang: Lang }) {
               >
                 <a
                   href={href}
-                  target={href.startsWith('http') ? '_blank' : undefined}
+                  target={
+                    href.startsWith('http') ? '_blank' : undefined
+                  }
                   rel="noreferrer"
                   className="group flex items-center gap-4 py-5"
                 >
