@@ -23,7 +23,7 @@
         "linkedin": "https://linkedin.com/in/mohammed-mosa-eg",
         "github": "https://github.com/m4a28",
         "whatsapp": "https://wa.me/message/MXV75QMVKRYZC1",
-        "cv": "/cv.pdf",
+        "cv": "/assets/pdf/Mohammed_Ibrahim_Mosa_Software_Engineer_resume.pdf",
         "profile_image": "/assets/image/mohammed_mosa.png",
         "skills": [
           "Java",
@@ -132,9 +132,7 @@
             "Flutter",
             "Dart",
             "Java",
-            "Kotlin",
-            "أداء عالٍ",
-            "تجربة استخدام سلسة"
+            "Kotlin"
           ]
         },
         {
@@ -180,37 +178,37 @@
           "name": "Java لتطوير تطبيقات الموبايل",
           "org": "معهد ITI",
           "year": "2022",
-          "img": "/certs/java-iti.jpg"
+          "img": "/assets/certs/java-iti.jpg"
         },
         {
           "name": "تعلّم Java ببناء 17 مشروعاً",
           "org": "Udemy",
           "year": "2022",
-          "img": "/certs/java-17-projects.jpg"
+          "img": "/assets/certs/java-17-projects.jpg"
         },
         {
           "name": "شهادة أساسيات Linux",
           "org": "Udemy",
           "year": "2020",
-          "img": "/certs/linux-essentials.jpg"
+          "img": "/assets/certs/linux-essentials.jpg"
         },
         {
           "name": "شهادة مسار مطوّر Android",
           "org": "معهد ITI",
           "year": "2023",
-          "img": "/certs/android-iti.jpg"
+          "img": "/assets/certs/android-iti.jpg"
         },
         {
           "name": "الدليل الكامل لتطوير Flutter",
           "org": "Udemy",
           "year": "2023",
-          "img": "/certs/flutter-complete.jpg"
+          "img": "/assets/certs/flutter-complete.jpg"
         },
         {
           "name": "تصميم وإدارة قواعد البيانات",
           "org": "Udemy",
           "year": "2024",
-          "img": "/certs/database-design.jpg"
+          "img": "/assets/certs/database-design.jpg"
         }
       ]
     },
@@ -229,6 +227,22 @@
       "github": "GitHub",
       "allProjects": "كل المشاريع على GitHub",
       "projects": [
+          {
+          "title": "ادارة مؤسسة نوايف الجنوب",
+          "desc": "تطبيق لادارة اعمال و موظفين مؤسسة نوايف الجنوب",
+          "tags": [
+            "Flutter",
+            "Dart",
+            "ٍSQLite",
+            "Supbase",
+            "Auth",
+            "syncFusion",
+            "riverpod",
+            "L10n"
+          ],
+          "repo": "nawif_app",
+          "img": "/assets/image/nawif_app.png"
+        },
         {
           "title": "العد التنازلي",
           "desc": "عدّ تنازلي للوقت المتبقي على مناسبتك",
@@ -239,8 +253,9 @@
             "L10n"
           ],
           "repo": "count_down",
-          "img": ""
+          "img": "/assets/image/count_down.png"
         },
+
         {
           "title": "Qr Lens | قارئ الباركود",
           "desc": "إنشاء وقراءة ومشاركة وحفظ رموز QR والباركود",
@@ -250,7 +265,7 @@
             "Sqlite"
           ],
           "repo": "qr_lens",
-          "img": ""
+          "img": "/assets/image/qr_lens.png"
         },
         {
           "title": "تطبيق إدارة المتاجر",
@@ -261,7 +276,7 @@
             "Sqlite"
           ],
           "repo": "Towmmen",
-          "img": ""
+          "img": "/assets/image/Towmmen.jpeg"
         },
         {
           "title": "مستخرج ألوان الصور",
@@ -273,7 +288,7 @@
             "matplotlib"
           ],
           "repo": "Color_Extractor",
-          "img": ""
+          "img": "/assets/image/color_extractor.png"
         },
         {
           "title": "صحيحين | صحيح البخاري ومسلم",
@@ -284,7 +299,7 @@
             "Sqlite"
           ],
           "repo": "Sahihain",
-          "img": ""
+          "img": "/assets/image/Sahihain.png"
         },
         {
           "title": "صانع الشهادات",
@@ -295,7 +310,7 @@
             "CSV"
           ],
           "repo": "Certificate_Maker",
-          "img": ""
+          "img": "/assets/image/certificate_maker.png"
         }
       ],
       "tools": [
@@ -309,31 +324,31 @@
           "name": "مستخرج الألوان",
           "desc": "استخرج لوحة ألوان من أي صورة",
           "users": "900 مستخدم",
-          "url": "#"
+          "url": "/tools/color_extractor.html"
         },
         {
           "name": "صانع بطاقات التهنئة",
           "desc": "صمّم بطاقات تهنئة وشاركها",
           "users": "3.2K مستخدم",
-          "url": "#"
+          "url": "/tools/HAPPY_EAID/index.html"
         },
         {
           "name": "مستخرج الروابط",
           "desc": "استخرج كل الروابط من النصوص والصفحات",
           "users": "1.6K مستخدم",
-          "url": "#"
+          "url": "/tools/link_extractor.html"
         },
         {
           "name": "بنّاء التعبيرات النمطية",
           "desc": "ابنِ التعبيرات النمطية بصرياً",
           "users": "620 مستخدم",
-          "url": "#"
+          "url": "/tools/regex-builder.html"
         },
         {
           "name": "دليل دوال Excel",
           "desc": "اعثر على دوال Excel وتعلّمها",
           "users": "520 مستخدم",
-          "url": "#"
+          "url": "/tools/excel_function.html"
         }
       ],
       "repoBase": "https://github.com/M4A28/"
@@ -454,7 +469,7 @@
         "linkedin": "https://linkedin.com/in/mohammed-mosa-eg",
         "github": "https://github.com/m4a28",
         "whatsapp": "https://wa.me/message/MXV75QMVKRYZC1",
-        "cv": "/cv.pdf",
+        "cv": "/assets/pdf/Mohammed_Ibrahim_Mosa_Software_Engineer_resume.pdf",
         "profile_image": "/assets/image/mohammed_mosa.png",
         "skills": [
           "Java",
@@ -611,37 +626,37 @@
           "name": "Java for Mobile App Development",
           "org": "ITI Institute",
           "year": "2022",
-          "img": "/certs/java-iti.jpg"
+          "img": "/assets/certs/java-iti.jpg"
         },
         {
           "name": "Learn Java by Building 17 Projects",
           "org": "Udemy",
           "year": "2022",
-          "img": "/certs/java-17-projects.jpg"
+          "img": "/assets/certs/java-17-projects.jpg"
         },
         {
           "name": "Linux Essentials certificate",
           "org": "Udemy",
           "year": "2020",
-          "img": "/certs/linux-essentials.jpg"
+          "img": "/assets/certs/linux-essentials.jpg"
         },
         {
           "name": "Android Developer Pathway certificate",
           "org": "ITI Institute",
           "year": "2023",
-          "img": "/certs/android-iti.jpg"
+          "img": "/assets/certs/android-iti.jpg"
         },
         {
           "name": "The Complete Flutter Development Guide",
           "org": "Udemy",
           "year": "2023",
-          "img": "/certs/flutter-complete.jpg"
+          "img": "/assets/certs/flutter-complete.jpg"
         },
         {
           "name": "Database Design and Management",
           "org": "Udemy",
           "year": "2024",
-          "img": "/certs/database-design.jpg"
+          "img": "/assets/certs/database-design.jpg"
         }
       ]
     },
@@ -661,6 +676,22 @@
       "allProjects": "All projects on GitHub",
       "projects": [
         {
+          "title": "Nawaif Al Janoub Organization Management",
+          "desc": "An application for managing the business operations and employees of Nawaif Al Janoub Organization",
+        "tags": [
+            "Flutter",
+            "Dart",
+            "ٍSQLite",
+            "Supbase",
+            "Auth",
+            "syncFusion",
+            "riverpod",
+            "L10n"
+          ],
+          "repo": "nawif_app",
+          "img": "/assets/image/nawif_app.png"
+        },
+        {
           "title": "Count Down",
           "desc": "Count down time until event",
           "tags": [
@@ -670,7 +701,7 @@
             "L10n"
           ],
           "repo": "count_down",
-          "img": ""
+          "img": "/assets/image/count_down.png"
         },
         {
           "title": "Qr Lens | Barcode Scanner",
@@ -681,7 +712,7 @@
             "Sqlite"
           ],
           "repo": "qr_lens",
-          "img": ""
+          "img": "/assets/image/qr_lens.png"
         },
         {
           "title": "Shop Management App",
@@ -692,7 +723,7 @@
             "Sqlite"
           ],
           "repo": "Towmmen",
-          "img": ""
+          "img": "/assets/image/Towmmen.jpeg"
         },
         {
           "title": "Image Color Extractor",
@@ -715,7 +746,7 @@
             "Sqlite"
           ],
           "repo": "Sahihain",
-          "img": ""
+          "img": "/assets/image/Sahihain.png"
         },
         {
           "title": "Certificate Maker",
@@ -726,7 +757,7 @@
             "CSV"
           ],
           "repo": "Certificate_Maker",
-          "img": ""
+          "img": "/assets/image/certificate_maker.png"
         }
       ],
       "tools": [
@@ -734,37 +765,37 @@
           "name": "Number Converter",
           "desc": "Convert numbers to Arabic words",
           "users": "1.3K users",
-          "url": "#"
+          "url": "/tools/numbers.html"
         },
         {
           "name": "Color Extractor",
           "desc": "Pull a color palette from any image",
           "users": "900 users",
-          "url": "#"
+          "url": "/tools/color_extractor.html"
         },
         {
           "name": "Greeting Card Maker",
           "desc": "Design and share greeting cards",
           "users": "3.2K users",
-          "url": "#"
+          "url": "/tools/HAPPY_EAID/index.html"
         },
         {
           "name": "Link Extractor",
           "desc": "Extract every link from text or pages",
           "users": "1.6K users",
-          "url": "#"
+          "url": "/tools/link_extractor.html"
         },
         {
           "name": "Regex Builder",
           "desc": "Build regular expressions visually",
           "users": "620 users",
-          "url": "#"
+          "url": "/tools/regex-builder.html"
         },
         {
           "name": "Excel Function Guide",
           "desc": "Find and learn Excel functions",
           "users": "520 users",
-          "url": "#"
+          "url": "/tools/excel_function.html"
         }
       ],
       "repoBase": "https://github.com/M4A28/"
