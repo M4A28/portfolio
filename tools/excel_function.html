@@ -1,0 +1,2723 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موسوعة دوال إكسل الشاملة</title>
+    <style>
+        :root {
+            --excel-green: #217346;
+            --bg-color: #f4f7f6;
+            --card-bg: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
+            background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--excel-green);
+            margin-bottom: 5px;
+        }
+
+        .stats {
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* البحث والتصفية */
+        .controls {
+            max-width: 900px;
+            margin: 0 auto 40px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .search-bar {
+            padding: 18px 25px;
+            border-radius: 15px;
+            border: 2px solid #ddd;
+            font-size: 1.1rem;
+            outline: none;
+            transition: 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-bar:focus {
+            border-color: var(--excel-green);
+            box-shadow: 0 10px 20px rgba(33, 115, 70, 0.1);
+        }
+
+        /* الشبكة */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* البطاقة الاحترافية */
+        .func-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .func-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .name-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .func-name {
+            font-family: 'Consolas', monospace;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--excel-green);
+        }
+
+        .category-tag {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            background: #e8f5e9;
+            color: var(--excel-green);
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        .func-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* زر النسخ السريع */
+        .copy-btn {
+            margin-top: auto;
+            padding-top: 15px;
+            text-align: left;
+        }
+
+        .copy-btn button {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .copy-btn button:hover {
+            color: var(--excel-green);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>موسوعة إكسل 2026</h1>
+        <div class="stats" id="counter">جاري تحميل الدوال...</div>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="search" class="search-bar"
+            placeholder="ابحث باسم الدالة أو الوصف (مثال: VLOOKUP أو مصفوفة)...">
+    </div>
+
+    <div class="grid" id="container"></div>
+
+    <script>
+        // مصفوفة البيانات الضخمة (عينة توضح الطريقة لـ 500 دالة)
+        const allFunctions = [
+                {
+                    "name": "ABS",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع القيمة المطلقة لأحد الأرقام"
+                },
+                {
+                    "name": "ACCRINT",
+                    "cat": "Financial",
+                    "desc": "إرجاع الفائدة المستحقة للورقة المالية الذي يعطي فائدة دورية"
+                },
+                {
+                    "name": "ACCRINTM",
+                    "cat": "Financial",
+                    "desc": "إرجاع الفائدة المستحقة للورقة المالية تُدفع فائدتها عند الاستحقاق"
+                },
+                {
+                    "name": "ACOS",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع قوس جيب التمام لأحد الأرقام"
+                },
+                {
+                    "name": "ACOSH",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع جيب التمام العكسي للقطع الزائد لأحد الأرقام"
+                },
+                {
+                    "name": "ACOT",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع قوس ظل التمام لأحد الأرقام"
+                },
+                {
+                    "name": "ACOTH",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع قوس ظل التمام الزائدي لأحد الأرقام"
+                },
+                {
+                    "name": "AGGREGATE",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع تجميع في قائمة أو قاعدة بيانات"
+                },
+                {
+                    "name": "ADDRESS",
+                    "cat": "Lookup and reference",
+                    "desc": "إرجاع مرجع كنص إلى خلية مفردة في ورقة عمل"
+                },
+                {
+                    "name": "AMORDEGRC",
+                    "cat": "Financial",
+                    "desc": "إرجاع الإهلاك لكل فترة محاسبية باستخدام مُعامل إهلاك"
+                },
+                {
+                    "name": "AMORLINC",
+                    "cat": "Financial",
+                    "desc": "إرجاع الإهلاك لكل فترة محاسبية"
+                },
+                {
+                    "name": "AND",
+                    "cat": "Logical",
+                    "desc": "إرجاع TRUE إذا كانت كافة وسيطاتها TRUE"
+                },
+                {
+                    "name": "ARABIC",
+                    "cat": "Math and trigonometry",
+                    "desc": "تحويل رقم روماني إلى رقم عربي، كرقم"
+                },
+                {
+                    "name": "AREAS",
+                    "cat": "Lookup and reference",
+                    "desc": "إرجاع عدد المناطق في مرجع"
+                },
+                {
+                    "name": "ARRAYTOTEXT",
+                    "cat": "Text",
+                    "desc": "تُرجع مصفوفة من القيم النصية من أي نطاق محدد."
+                },
+                {
+                    "name": "ASC",
+                    "cat": "Text",
+                    "desc": "تغيير أحرف إنجليزية كاملة العرض (مزدوجة البايت) أو كاتاكانا في سلسلة أحرف إلى أحرف بنصف العرض (أحادية البايت)"
+                },
+                {
+                    "name": "ASIN",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع قوس جيب الزاوية لأحد الأرقام"
+                },
+                {
+                    "name": "ASINH",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع جيب الزاوية العكسي الزائدي لأحد الأرقام"
+                },
+                {
+                    "name": "ATAN",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع قوس ظل الزاوية لأحد الأرقام"
+                },
+                {
+                    "name": "ATAN2",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع قوس ظل الزاوية من الإحداثيات س وص"
+                },
+                {
+                    "name": "ATANH",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع ظل الزاوية الزائدي العكسي لقطع زائد لأحد الأرقام"
+                },
+                {
+                    "name": "AVEDEV",
+                    "cat": "Statistical",
+                    "desc": "إرجاع متوسط الانحرافات المطلقة لنقاط البيانات عن الوسط الخاص بها"
+                },
+                {
+                    "name": "AVERAGE",
+                    "cat": "Statistical",
+                    "desc": "إرجاع متوسط الوسيطات الخاصة بالدالة"
+                },
+                {
+                    "name": "AVERAGEA",
+                    "cat": "Statistical",
+                    "desc": "إرجاع متوسط الوسيطات الخاصة بالدالة، بما في ذلك الأرقام والنصوص والقيم المنطقية"
+                },
+                {
+                    "name": "AVERAGEIF",
+                    "cat": "Statistical",
+                    "desc": "إرجاع المتوسط (الوسط الحسابي) لكافة الخلايا الموجودة في نطاق والتي تفي بمعايير معينة"
+                },
+                {
+                    "name": "AVERAGEIFS",
+                    "cat": "Statistical",
+                    "desc": "إرجاع المتوسط (الوسط الحسابي) لكافة الخلايا التي تفي بمعايير متعددة."
+                },
+                {
+                    "name": "BAHTTEXT",
+                    "cat": "Text",
+                    "desc": "لتحويل رقم إلى نص، باستخدام تنسيق العملة ß (باهت)"
+                },
+                {
+                    "name": "BASE",
+                    "cat": "Math and trigonometry",
+                    "desc": "تحويل رقم إلى تمثيل نصي بالجذر (الأساس) المعين"
+                },
+                {
+                    "name": "BESSELI",
+                    "cat": "Engineering",
+                    "desc": "إرجاع دالة Bessel المعدلة In(x)"
+                },
+                {
+                    "name": "BESSELJ",
+                    "cat": "Engineering",
+                    "desc": "إرجاع دالة Jn(x) Bessel"
+                },
+                {
+                    "name": "BESSELK",
+                    "cat": "Engineering",
+                    "desc": "إرجاع دالة Bessel المعدلة Kn(x)"
+                },
+                {
+                    "name": "BESSELY",
+                    "cat": "Engineering",
+                    "desc": "إرجاع الدالة Yn(x) Bessel"
+                },
+                {
+                    "name": "BETADIST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع دالة التوزيع التراكمي لبيتافي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "DIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع دالة التوزيع التراكمي لبيتا"
+                },
+                {
+                    "name": "BETAINV",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع عكس دالة التوزيع التراكمي لتوزيع بيتا معينفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "INV",
+                    "cat": "Statistical",
+                    "desc": "إرجاع عكس دالة التوزيع التراكمي لتوزيع بيتا معين"
+                },
+                {
+                    "name": "DEC",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم ثنائي إلى رقم عشري"
+                },
+                {
+                    "name": "HEX",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم ثنائي إلى رقم ست عشري"
+                },
+                {
+                    "name": "OCT",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم ثنائي إلى رقم ثماني"
+                },
+                {
+                    "name": "BINOMDIST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع المصطلح الفردي لاحتمال التوزيع ذي الحدينفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "DIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع المصطلح الفردي لاحتمال التوزيع ذي الحدين"
+                },
+                {
+                    "name": "RANGE",
+                    "cat": "Statistical",
+                    "desc": "إرجاع احتمال نتيجة تجريبية باستخدام التوزيع ذي الحدين"
+                },
+                {
+                    "name": "INV",
+                    "cat": "Statistical",
+                    "desc": "إرجاع أصغر قيمة يكون عندها التوزيع التراكمي ذو الحدين أصغر من قيمة المعيار أو مساوياً لها"
+                },
+                {
+                    "name": "BITAND",
+                    "cat": "Engineering",
+                    "desc": "إرجاع البت 'و' لرقمين"
+                },
+                {
+                    "name": "BITLSHIFT",
+                    "cat": "Engineering",
+                    "desc": "إرجاع قيمة رقم مزاحة لليسار بواسطة وحدات بت shift_amount"
+                },
+                {
+                    "name": "BITOR",
+                    "cat": "Engineering",
+                    "desc": "إرجاع البت 'OR' لرقمين"
+                },
+                {
+                    "name": "BITRSHIFT",
+                    "cat": "Engineering",
+                    "desc": "إرجاع قيمة رقم مزاحة لليمين بواسطة وحدات بت shift_amount"
+                },
+                {
+                    "name": "BITXOR",
+                    "cat": "Engineering",
+                    "desc": "ترجع ناتج رابطة البت 'Exclusive Or' لرقمين"
+                },
+                {
+                    "name": "BYCOL",
+                    "cat": "Logical",
+                    "desc": "تطبّق LAMBDA على كل عمود وترجع صفيف من النتائج"
+                },
+                {
+                    "name": "BYROW",
+                    "cat": "Logical",
+                    "desc": "تطبّق LAMBDA على كل صف وترجع صفيف من النتائج"
+                },
+                {
+                    "name": "CALL",
+                    "cat": "Add-in and Automation",
+                    "desc": "استدعاء إجراء في مكتبة الارتباط الديناميكي أو استدعاء مورد التعليمات البرمجية"
+                },
+                {
+                    "name": "CEILING",
+                    "cat": "Compatibility",
+                    "desc": "تقريب رقم إلى أقرب عدد صحيح أو إلى أقرب مضاعف ذي أهمية"
+                },
+                {
+                    "name": "MATH",
+                    "cat": "Math and trigonometry",
+                    "desc": "تقريب رقم إلى الأعلى وصولاً إلى أقرب عدد صحيح أو إلى أقرب مضاعف ذي أهمية"
+                },
+                {
+                    "name": "PRECISE",
+                    "cat": "Math and trigonometry",
+                    "desc": "تقريب رقم إلى أقرب عدد صحيح أو إلى أقرب مضاعف ذي أهمية. يتم تقريب الرقم إلى الأعلى بغض النظر عن علامته."
+                },
+                {
+                    "name": "CELL",
+                    "cat": "Information",
+                    "desc": "إرجاع معلومات حول تنسيق خلية أو موقعها أو محتوياتهاهذه الدالة غير متوفرة في Excel للويب."
+                },
+                {
+                    "name": "CHAR",
+                    "cat": "Text",
+                    "desc": "إرجاع الحرف المحدد برقم الرمز"
+                },
+                {
+                    "name": "CHIDIST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع الاحتمال وحيد الطرف لتوزيع كاي تربيعملاحظة: في Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "CHIINV",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع عكس الاحتمال وحيد الطرف لتوزيع كاي تربيعملاحظة: في Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "CHITEST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع اختبار الاستقلالملاحظة: في Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "DIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع دالة كثافة احتمالات بيتا التراكمية"
+                },
+                {
+                    "name": "RT",
+                    "cat": "Statistical",
+                    "desc": "إرجاع الاحتمال وحيد الطرف لتوزيع كاي تربيع"
+                },
+                {
+                    "name": "INV",
+                    "cat": "Statistical",
+                    "desc": "إرجاع دالة كثافة احتمالات بيتا التراكمية"
+                },
+                {
+                    "name": "RT",
+                    "cat": "Statistical",
+                    "desc": "إرجاع عكس الاحتمال وحيد الطرف لتوزيع كاي تربيع"
+                },
+                {
+                    "name": "TEST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع اختبار الاستقلال"
+                },
+                {
+                    "name": "CHOOSE",
+                    "cat": "Lookup and reference",
+                    "desc": "تختار قيمة من قائمة قيم"
+                },
+                {
+                    "name": "CHOOSECOLS",
+                    "cat": "Lookup and reference",
+                    "desc": "ترجع الأعمدة المحددة من صفيف"
+                },
+                {
+                    "name": "CHOOSEROWS",
+                    "cat": "Lookup and reference",
+                    "desc": "ترجع الصفوف المحددة من صفيف"
+                },
+                {
+                    "name": "CLEAN",
+                    "cat": "Text",
+                    "desc": "إزالة كافة الأحرف غير القابلة للطباعة من النص"
+                },
+                {
+                    "name": "CODE",
+                    "cat": "Text",
+                    "desc": "إرجاع رمز رقمي للحرف الأول بإحدى السلاسل النصية"
+                },
+                {
+                    "name": "COLUMN",
+                    "cat": "Lookup and reference",
+                    "desc": "إرجاع رقم العمود الخاص بمرجع"
+                },
+                {
+                    "name": "COLUMNS",
+                    "cat": "Lookup and reference",
+                    "desc": "إرجاع عدد الأعمدة الموجودة في مرجع"
+                },
+                {
+                    "name": "COMBIN",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع عدد التوافقيات لعدد معين من العناصر"
+                },
+                {
+                    "name": "COMBINA",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع عدد التركيبات لعدد معين من العناصر"
+                },
+                {
+                    "name": "COMPLEX",
+                    "cat": "Engineering",
+                    "desc": "تحويل المُعاملات الحقيقية والتخيلية إلى رقم مركب"
+                },
+                {
+                    "name": "CONCAT",
+                    "cat": "Text",
+                    "desc": "دمج النص من نطاقات و/أو سلاسل متعددة، ولكن لا توفر المحدِد أو وسيطات تجاهل الفارغ."
+                },
+                {
+                    "name": "CONCATENATE",
+                    "cat": "Text",
+                    "desc": "ربط عدة عناصر نصية في عنصر نصي واحد"
+                },
+                {
+                    "name": "CONFIDENCE",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع فاصل الثقة لوسط محتوىفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "NORM",
+                    "cat": "Statistical",
+                    "desc": "إرجاع فاصل الثقة لوسط محتوى"
+                },
+                {
+                    "name": "T",
+                    "cat": "Statistical",
+                    "desc": "إرجاع فاصل الثقة لوسط محتوى، باستخدام توزيع t للطالب"
+                },
+                {
+                    "name": "CONVERT",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم من نظام قياس إلى آخر"
+                },
+                {
+                    "name": "CORREL",
+                    "cat": "Statistical",
+                    "desc": "إرجاع مُعامل الارتباط بين مجموعتين من البيانات"
+                },
+                {
+                    "name": "COS",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع جيب التمام لأحد الأرقام"
+                },
+                {
+                    "name": "COSH",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع جيب التمام الزائدي لأحد الأرقام"
+                },
+                {
+                    "name": "COT",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع جيب التمام الزائدي لأحد الأرقام"
+                },
+                {
+                    "name": "COTH",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع ظل التمام لزاوية"
+                },
+                {
+                    "name": "COUNT",
+                    "cat": "Statistical",
+                    "desc": "حساب عدد الأرقام الموجودة في قائمة الوسيطات"
+                },
+                {
+                    "name": "COUNTA",
+                    "cat": "Statistical",
+                    "desc": "حساب عدد القيم الموجودة في قائمة الوسيطات"
+                },
+                {
+                    "name": "COUNTBLANK",
+                    "cat": "Statistical",
+                    "desc": "حساب عدد الخلايا الفارغة داخل نطاق"
+                },
+                {
+                    "name": "COUNTIF",
+                    "cat": "Statistical",
+                    "desc": "حساب عدد الخلايا داخل نطاق والتي تفي بالمعايير المعينة"
+                },
+                {
+                    "name": "COUNTIFS",
+                    "cat": "Statistical",
+                    "desc": "حساب عدد الخلايا داخل نطاق والتي تفي بالمعايير المعينة"
+                },
+                {
+                    "name": "COUPDAYBS",
+                    "cat": "Financial",
+                    "desc": "إرجاع عدد الأيام من بداية فترة القسيمة إلى تاريخ التسوية"
+                },
+                {
+                    "name": "COUPDAYS",
+                    "cat": "Financial",
+                    "desc": "إرجاع عدد الأيام في فترة القسيمة التي تتضمن تاريخ التسوية"
+                },
+                {
+                    "name": "COUPDAYSNC",
+                    "cat": "Financial",
+                    "desc": "إرجاع عدد الأيام من تاريخ التسوية إلى تاريخ القسيمة التالي"
+                },
+                {
+                    "name": "COUPNCD",
+                    "cat": "Financial",
+                    "desc": "إرجاع تاريخ القسيمة التالي بعد تاريخ التسوية"
+                },
+                {
+                    "name": "COUPNUM",
+                    "cat": "Financial",
+                    "desc": "إرجاع عدد القسائم المستحقة الدفع بين تاريخ التسوية وتاريخ الاستحقاق"
+                },
+                {
+                    "name": "COUPPCD",
+                    "cat": "Financial",
+                    "desc": "إرجاع تاريخ القسيمة السابق قبل تاريخ التسوية"
+                },
+                {
+                    "name": "COVAR",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع التباين المشترك، معدل ضرب الانحرافات المزدوجةفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "P",
+                    "cat": "Statistical",
+                    "desc": "إرجاع التباين المشترك، معدل ضرب الانحرافات المزدوجة"
+                },
+                {
+                    "name": "S",
+                    "cat": "Statistical",
+                    "desc": "إرجاع التباين المشترك، معدل ضرب الانحرافات لكل زوج من نقاط البيانات في مجموعتين من البيانات"
+                },
+                {
+                    "name": "CRITBINOM",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع أصغر قيمة يكون عندها التوزيع التراكمي ذو الحدين أصغر من قيمة المعيار أو مساوياً لهافي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "CSC",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع قاطع التمام لزاوية"
+                },
+                {
+                    "name": "CSCH",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع قاطع التمام الزائدي لزاوية"
+                },
+                {
+                    "name": "CUBEKPIMEMBER",
+                    "cat": "Cube",
+                    "desc": "إرجاع اسم المؤشر الرئيسي للأداء (KPI) والخاصية والقياس، وعرض الاسم والخاصية في الخلية. إن KPI عبارة عن مقياس كمي مثل الربح الشهري الإجمالي أو حساب معدل الدوران الفصلي للموظفين، يُستخدم لمراقبة أداء المؤسسة."
+                },
+                {
+                    "name": "CUBEMEMBER",
+                    "cat": "Cube",
+                    "desc": "إرجاع عضو واحد أو مجموعة أعضاء في التسلسل الهيكلي للمكعب. استخدم هذه الدالة للتحقق من وجود العضو أو مجموعة الأعضاء في المكعب."
+                },
+                {
+                    "name": "CUBEMEMBERPROPERTY",
+                    "cat": "Cube",
+                    "desc": "إرجاع قيمة خاصية عضو من المكعب. استخدام هذه الدالة للتحقق من وجود اسم العضو داخل المكعب وإرجاع الخاصية المحددة لهذا العضو."
+                },
+                {
+                    "name": "CUBERANKEDMEMBER",
+                    "cat": "Cube",
+                    "desc": "إرجاع عضو ما أو عضو له ترتيب في مجموعة. استخدم هذه الدالة لإرجاع عنصر أو أكثر في مجموعة، مثل صاحب أعلى نسبة مبيعات أو أفضل عشرة طلاب."
+                },
+                {
+                    "name": "CUBESET",
+                    "cat": "Cube",
+                    "desc": "تعريف مجموعة محسوبة من قيم أعضاء أو مجموعة قيم بإرسال تعبير مجموعة إلى مكعب على الخادم، الذي يقوم بإنشاء المجموعة، ثم إرجاع تلك المجموعة إلى Microsoft Office Excel."
+                },
+                {
+                    "name": "CUBESETCOUNT",
+                    "cat": "Cube",
+                    "desc": "إرجاع عدد العناصر الموجودة في مجموعة."
+                },
+                {
+                    "name": "CUBEVALUE",
+                    "cat": "Cube",
+                    "desc": "إرجاع قيمة مجمعة من مكعب."
+                },
+                {
+                    "name": "CUMIPMT",
+                    "cat": "Financial",
+                    "desc": "إرجاع الفائدة المتراكمة المدفوعة بين فترتين"
+                },
+                {
+                    "name": "CUMPRINC",
+                    "cat": "Financial",
+                    "desc": "إرجاع رأس المال المتراكم المدفوع على قرض بين فترتين"
+                },
+                {
+                    "name": "DATE",
+                    "cat": "Date and time",
+                    "desc": "إرجاع الرقم التسلسلي لتاريخ معين"
+                },
+                {
+                    "name": "DATEDIF",
+                    "cat": "Date and time",
+                    "desc": "تحسب هذه الدالة عدد الأيام، أو الأشهر أو السنوات بين تاريخين. تُعتبر هذه الدالة مفيدة في الصيغ التي تحتاج فيها إلى حساب العمر."
+                },
+                {
+                    "name": "DATEVALUE",
+                    "cat": "Date and time",
+                    "desc": "تحويل تاريخ على شكل نص إلى رقم تسلسلي"
+                },
+                {
+                    "name": "DAVERAGE",
+                    "cat": "Database",
+                    "desc": "إرجاع متوسط إدخالات قاعدة البيانات المحددة"
+                },
+                {
+                    "name": "DAY",
+                    "cat": "Date and time",
+                    "desc": "تحويل رقم تسلسلي إلى يوم من أيام الشهر"
+                },
+                {
+                    "name": "DAYS",
+                    "cat": "Date and time",
+                    "desc": "إرجاع عدد الأيام بين تاريخين"
+                },
+                {
+                    "name": "DAYS360",
+                    "cat": "Date and time",
+                    "desc": "حساب عدد الأيام بين تاريخين استناداً إلى سنة مكونة من 360 يوماً"
+                },
+                {
+                    "name": "DB",
+                    "cat": "Financial",
+                    "desc": "إرجاع إهلاك الأصول لفترة معينة باستخدام أسلوب الرصيد المتناقص الثابت"
+                },
+                {
+                    "name": "DBCS",
+                    "cat": "Text",
+                    "desc": "تغيير الأحرف الإنجليزية أو كاتاكانا نصفية العرض (مفردة البايت) في سلسلة أحرف إلى أحرف كاملة العرض (مزدوجة البايت)"
+                },
+                {
+                    "name": "DCOUNT",
+                    "cat": "Database",
+                    "desc": "حساب الخلايا التي تحتوي على أرقام في قاعدة بيانات"
+                },
+                {
+                    "name": "DCOUNTA",
+                    "cat": "Database",
+                    "desc": "حساب الخلايا غير الفارغة في قاعدة بيانات"
+                },
+                {
+                    "name": "DDB",
+                    "cat": "Financial",
+                    "desc": "إرجاع إهلاك الأصول لفترة معينة باستخدام أسلوب الرصيد المتناقص المزدوج أو أساليب أخرى تحددها"
+                },
+                {
+                    "name": "BIN",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم عشري إلى رقم ثنائي"
+                },
+                {
+                    "name": "HEX",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم عشري إلى رقم ست عشري"
+                },
+                {
+                    "name": "OCT",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم عشري إلى رقم ثماني"
+                },
+                {
+                    "name": "DECIMAL",
+                    "cat": "Math and trigonometry",
+                    "desc": "تحويل تمثيل نصي لأحد الأرقام في أساس معين إلى رقم عشري"
+                },
+                {
+                    "name": "DEGREES",
+                    "cat": "Math and trigonometry",
+                    "desc": "تحويل من تقدير دائري إلى درجات"
+                },
+                {
+                    "name": "DELTA",
+                    "cat": "Engineering",
+                    "desc": "اختبار المساواة بين قيمتين"
+                },
+                {
+                    "name": "DEVSQ",
+                    "cat": "Statistical",
+                    "desc": "إرجاع مجموع مربعات الانحرافات"
+                },
+                {
+                    "name": "DGET",
+                    "cat": "Database",
+                    "desc": "استخراج سجل مفرد من قاعدة بيانات يطابق المعايير المعينة"
+                },
+                {
+                    "name": "DISC",
+                    "cat": "Financial",
+                    "desc": "إرجاع نسبة الخصم على الورقة المالية"
+                },
+                {
+                    "name": "DMAX",
+                    "cat": "Database",
+                    "desc": "إرجاع القيمة القصوى من إدخالات قاعدة البيانات المحددة"
+                },
+                {
+                    "name": "DMIN",
+                    "cat": "Database",
+                    "desc": "إرجاع القيمة الدنيا من إدخالات قاعدة البيانات المحددة"
+                },
+                {
+                    "name": "DOLLAR",
+                    "cat": "Text",
+                    "desc": "تحويل رقم إلى نص، باستخدام تنسيق العملة $ (دولار)"
+                },
+                {
+                    "name": "DOLLARDE",
+                    "cat": "Financial",
+                    "desc": "تحويل سعر دولار، يتم التعبير عنه ككسر، إلى سعر دولار، يتم التعبير عنه كرقم عشري"
+                },
+                {
+                    "name": "DOLLARFR",
+                    "cat": "Financial",
+                    "desc": "تحويل سعر دولار، يتم التعبير عنه كرقم عشري، إلى سعر دولار، يتم التعبر عنه ككسر"
+                },
+                {
+                    "name": "DPRODUCT",
+                    "cat": "Database",
+                    "desc": "تضرب القيم في حقل سجلات معين يطابق المعيار الموجود في قاعدة بيانات"
+                },
+                {
+                    "name": "DROP",
+                    "cat": "Lookup and reference",
+                    "desc": "تستبعد عدد محدد من الصفوف أو الأعمدة من بداية الصفيف أو نهايته"
+                },
+                {
+                    "name": "DSTDEV",
+                    "cat": "Database",
+                    "desc": "تقدير الانحراف المعياري استناداً إلى عينة من إدخالات قاعدة بيانات محددة"
+                },
+                {
+                    "name": "DSTDEVP",
+                    "cat": "Database",
+                    "desc": "حساب الانحراف المعياري استناداً إلى المحتوى بالكامل لإدخالات قاعدة البيانات المحددة"
+                },
+                {
+                    "name": "DSUM",
+                    "cat": "Database",
+                    "desc": "جمع الأرقام في عمود الحقل الخاص بالسجلات في قاعدة البيانات التي تطابق المعايير"
+                },
+                {
+                    "name": "DURATION",
+                    "cat": "Financial",
+                    "desc": "إرجاع المدة السنوية لورقة مالية لها مدفوعات فوائد دورية"
+                },
+                {
+                    "name": "DVAR",
+                    "cat": "Database",
+                    "desc": "تقدير التباين استناداً إلى عينة من إدخالات قاعدة البيانات المحددة"
+                },
+                {
+                    "name": "DVARP",
+                    "cat": "Database",
+                    "desc": "حساب التباين استناداً إلى المحتوى بالكامل لإدخالات قاعدة البيانات المحددة"
+                },
+                {
+                    "name": "EDATE",
+                    "cat": "Date and time",
+                    "desc": "إرجاع الرقم التسلسلي للتاريخ المشار إليه بعدد الأشهر قبل تاريخ البداية أو بعده"
+                },
+                {
+                    "name": "EFFECT",
+                    "cat": "Financial",
+                    "desc": "إرجاع النسبة الفعلية السنوية للفائدة"
+                },
+                {
+                    "name": "ENCODEURL",
+                    "cat": "Web",
+                    "desc": "إرجاع سلسلة مرمّزة بـ URLهذه الدالة غير متوفرة في Excel للويب."
+                },
+                {
+                    "name": "EOMONTH",
+                    "cat": "Date and time",
+                    "desc": "إرجاع الرقم التسلسلي لليوم الأخير من الشهر الذي يقع قبل عدد محدد من الأشهر أو يليه"
+                },
+                {
+                    "name": "ERF",
+                    "cat": "Engineering",
+                    "desc": "إرجاع دالة الخطأ"
+                },
+                {
+                    "name": "PRECISE",
+                    "cat": "Engineering",
+                    "desc": "إرجاع دالة الخطأ"
+                },
+                {
+                    "name": "ERFC",
+                    "cat": "Engineering",
+                    "desc": "إرجاع دالة الخطأ التكميلية"
+                },
+                {
+                    "name": "PRECISE",
+                    "cat": "Engineering",
+                    "desc": "إرجاع دالة ERF التكميلية بالتكامل بين x وما لا نهاية"
+                },
+                {
+                    "name": "TYPE",
+                    "cat": "Information",
+                    "desc": "إرجاع رقم مطابق لأحد أنواع الخطأ"
+                },
+                {
+                    "name": "EUROCONVERT",
+                    "cat": "Add-in and Automation",
+                    "desc": "تحويل رقم إلى عملة اليورو أو تحويل رقم من عملة اليورو إلى عملة اليورو لأي من الدول الأعضاء في الاتحاد الأوروبي أو تحويل رقم من عملة دولة عضو في الاتحاد الأوروبي إلى عملة دولة أخرى باستخدام اليورو كوسيط (التثليث)."
+                },
+                {
+                    "name": "EVEN",
+                    "cat": "Math and trigonometry",
+                    "desc": "تقريب رقم إلى الأعلى إلى أقرب رقم صحيح زوجي"
+                },
+                {
+                    "name": "EXACT",
+                    "cat": "Text",
+                    "desc": "التحقق من تطابق قيمتين نصيتين"
+                },
+                {
+                    "name": "EXP",
+                    "cat": "Math and trigonometry",
+                    "desc": "ترجع e المرفوعة إلى أس أي رقم معين"
+                },
+                {
+                    "name": "EXPAND",
+                    "cat": "Lookup and reference",
+                    "desc": "توسع أو تغيّر حجم صفيف لأبعاد محددة من الصفوف والأعمدة"
+                },
+                {
+                    "name": "EXPONDIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع التوزيع الأسي"
+                },
+                {
+                    "name": "EXPONDIST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع التوزيع الأسيفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "FACT",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع مضروب لأحد الأرقام"
+                },
+                {
+                    "name": "FACTDOUBLE",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع المضروب المزدوج لأحد الأرقام"
+                },
+                {
+                    "name": "FALSE",
+                    "cat": "Logical",
+                    "desc": "إرجاع القيمة المنطقية FALSE"
+                },
+                {
+                    "name": "DIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع توزيع الاحتمال F"
+                },
+                {
+                    "name": "FDIST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع توزيع الاحتمال Fفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "RT",
+                    "cat": "Statistical",
+                    "desc": "إرجاع توزيع الاحتمال F"
+                },
+                {
+                    "name": "FILTER",
+                    "cat": "Lookup and reference",
+                    "desc": "تصفية نطاق من البيانات استناداً إلى المعايير التي تحددها"
+                },
+                {
+                    "name": "FILTERXML",
+                    "cat": "Web",
+                    "desc": "إرجاع بيانات محددة من محتوى XML باستخدام XPath المحددهذه الدالة غير متوفرة في Excel للويب."
+                },
+                {
+                    "name": "وFIND",
+                    "cat": "Text",
+                    "desc": "البحث عن إحدى القيم النصية داخل قيمة نصية أخرى (تحسس حالة الأحرف)"
+                },
+                {
+                    "name": "INV",
+                    "cat": "Statistical",
+                    "desc": "إرجاع عكس توزيع الاحتمال F"
+                },
+                {
+                    "name": "RT",
+                    "cat": "Statistical",
+                    "desc": "إرجاع عكس توزيع الاحتمال F"
+                },
+                {
+                    "name": "FINV",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع عكس توزيع الاحتمال Fفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "FISHER",
+                    "cat": "Statistical",
+                    "desc": "إرجاع تحويل Fisher"
+                },
+                {
+                    "name": "FISHERINV",
+                    "cat": "Statistical",
+                    "desc": "إرجاع عكس تحويل Fisher"
+                },
+                {
+                    "name": "FIXED",
+                    "cat": "Text",
+                    "desc": "تنسيق رقم كنص باستخدام عدد ثابت من المنازل العشرية"
+                },
+                {
+                    "name": "FLOOR",
+                    "cat": "Compatibility",
+                    "desc": "تقريب رقم للأسفل، باتجاه الصفرفي Excel 2007 وExcel 2010، هذه الدالة هي دالة رياضيات ومثلثات."
+                },
+                {
+                    "name": "MATH",
+                    "cat": "Math and trigonometry",
+                    "desc": "تقريب رقم للأسفل إلى أقرب عدد صحيح أو إلى أقرب مضاعف من المضاعفات ذات أهمية"
+                },
+                {
+                    "name": "PRECISE",
+                    "cat": "Math and trigonometry",
+                    "desc": "تقريب رقم إلى أقرب عدد صحيح أو إلى أقرب مضاعف ذي أهمية. يتم تقريب الرقم إلى الأعلى بغض النظر عن علامته."
+                },
+                {
+                    "name": "FORECAST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع قيمة موجودة على اتجاه خطيفي Excel 2016، تم استبدال هذه الدالة بالدالة FORECAST.LINEAR كجزء من دالات التنبؤ الجديدة، ولكنها ما زالت متوفرة للتوافق مع الإصدارات السابقة."
+                },
+                {
+                    "name": "ETS",
+                    "cat": "Statistical",
+                    "desc": "تُرجع قيمة مستقبلية استناداً إلى قيم موجودة (تاريخية) باستخدام الإصدار AAA من خوارمية التجانس الأسي (ETS)"
+                },
+                {
+                    "name": "CONFINT",
+                    "cat": "Statistical",
+                    "desc": "تُرجع فاصل الثقة لقيمة التنبؤ في التاريخ المستهدف المحدد"
+                },
+                {
+                    "name": "SEASONALITY",
+                    "cat": "Statistical",
+                    "desc": "تُرجع طول النمط المتكرر الذي يكشف عنه Excel للتسلسل الزمني المحدد"
+                },
+                {
+                    "name": "STAT",
+                    "cat": "Statistical",
+                    "desc": "تُرجع قيمة إحصائية كنتيجة للتنبؤ بالتسلسل الزمني"
+                },
+                {
+                    "name": "LINEAR",
+                    "cat": "Statistical",
+                    "desc": "تُرجع قيمة بالاستناد إلى قيم موجودة"
+                },
+                {
+                    "name": "FORMULATEXT",
+                    "cat": "Lookup and reference",
+                    "desc": "إرجاع صيغة في مرجع معين كنص"
+                },
+                {
+                    "name": "FREQUENCY",
+                    "cat": "Statistical",
+                    "desc": "إرجاع توزيع تكراري كصفيف عمودي"
+                },
+                {
+                    "name": "TEST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع نتيجة اختبار F"
+                },
+                {
+                    "name": "FTEST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع نتيجة اختبار Fفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "FV",
+                    "cat": "Financial",
+                    "desc": "إرجاع القيمة المستقبلية للاستثمار"
+                },
+                {
+                    "name": "FVSCHEDULE",
+                    "cat": "Financial",
+                    "desc": "إرجاع القيمة المستقبلية لرأس المال الأولي بعد تطبيق سلسلة من نسب الفوائد المركبة"
+                },
+                {
+                    "name": "GAMMA",
+                    "cat": "Statistical",
+                    "desc": "إرجاع قيمة دالة غاما"
+                },
+                {
+                    "name": "DIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع توزيع غاما"
+                },
+                {
+                    "name": "GAMMADIST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع توزيع غامافي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "INV",
+                    "cat": "Statistical",
+                    "desc": "إرجاع عكس توزيع غاما التراكمي"
+                },
+                {
+                    "name": "GAMMAINV",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع عكس توزيع غاما التراكميفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "GAMMALN",
+                    "cat": "Statistical",
+                    "desc": "إرجاع اللوغاريتم العادي لدالة غاما، Γ(x)"
+                },
+                {
+                    "name": "PRECISE",
+                    "cat": "Statistical",
+                    "desc": "إرجاع اللوغاريتم العادي لدالة غاما، Γ(x)"
+                },
+                {
+                    "name": "GAUSS",
+                    "cat": "Statistical",
+                    "desc": "إرجاع 0.5 أقل من التوزيع التراكمي القياسي العادي"
+                },
+                {
+                    "name": "GCD",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع أكبر عامل قسمة مشترك"
+                },
+                {
+                    "name": "GEOMEAN",
+                    "cat": "Statistical",
+                    "desc": "إرجاع الوسط الهندسي"
+                },
+                {
+                    "name": "GESTEP",
+                    "cat": "Engineering",
+                    "desc": "اختبار ما إذا كان أحد الأرقام أكبر من قيمة البدء"
+                },
+                {
+                    "name": "GETPIVOTDATA",
+                    "cat": "Lookup and reference",
+                    "desc": "إرجاع البيانات المُخزنة في تقرير PivotTable"
+                },
+                {
+                    "name": "GROWTH",
+                    "cat": "Statistical",
+                    "desc": "إرجاع القيم الموجودة على اتجاه أسي"
+                },
+                {
+                    "name": "HARMEAN",
+                    "cat": "Statistical",
+                    "desc": "إرجاع الوسط التوافقي"
+                },
+                {
+                    "name": "BIN",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم سداسي عشري إلى رقم ثنائي"
+                },
+                {
+                    "name": "DEC",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم سداسي عشري إلى رقم عشري"
+                },
+                {
+                    "name": "OCT",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم سداسي عشري إلى رقم ثماني"
+                },
+                {
+                    "name": "HLOOKUP",
+                    "cat": "Lookup and reference",
+                    "desc": "البحث في الصف العلوي لصفيف وإرجاع قيمة الخلية المُشار إليها"
+                },
+                {
+                    "name": "HOUR",
+                    "cat": "Date and time",
+                    "desc": "تحوّل رقم تسلسلي إلى ساعة"
+                },
+                {
+                    "name": "HSTACK",
+                    "cat": "Lookup and reference",
+                    "desc": "تلحق الصفائف أفقيا وفي تسلسل لإرجاع صفيف أكبر"
+                },
+                {
+                    "name": "HYPERLINK",
+                    "cat": "Lookup and reference",
+                    "desc": "إنشاء اختصار أو انتقال سريع يفتح مستنداً مخزناً على خادم شبكة أو إنترانت أو الإنترنت"
+                },
+                {
+                    "name": "DIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع توزيع الهندسة الفوقية"
+                },
+                {
+                    "name": "HYPGEOMDIST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع توزيع الهندسة الفوقيةفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "IF",
+                    "cat": "Logical",
+                    "desc": "تعيين اختبار منطقي لتنفيذه"
+                },
+                {
+                    "name": "IFERROR",
+                    "cat": "Logical",
+                    "desc": "إرجاع قيمة تحددها إذا تم تقييم الصيغة إلى خطأ؛ وخلاف ذلك، إرجاع نتيجة الصيغة"
+                },
+                {
+                    "name": "IFNA",
+                    "cat": "Logical",
+                    "desc": "إرجاع القيمة التي تحددها إذا تحوّل التعبير إلى #N/A، وبخلاف ذلك، يتم إرجاع نتيجة التعبير"
+                },
+                {
+                    "name": "IFS",
+                    "cat": "Logical",
+                    "desc": "التحقق مما إذا كانت تتم تلبيه شرط واحد أو أكثر وإرجاع قيمة تطابق شرط TRUE الأول."
+                },
+                {
+                    "name": "IMABS",
+                    "cat": "Engineering",
+                    "desc": "يقوم بإرجاع القيمة المطلقة (المعامل) الخاصة بعدد مركب"
+                },
+                {
+                    "name": "IMAGE",
+                    "cat": "Web",
+                    "desc": "ويب: يقوم بإرجاع صورة من مصدر معين"
+                },
+                {
+                    "name": "IMAGINARY",
+                    "cat": "Engineering",
+                    "desc": "إرجاع المُعامل التخيلي لعدد مركب"
+                },
+                {
+                    "name": "IMARGUMENT",
+                    "cat": "Engineering",
+                    "desc": "إرجاع وسيطة ثيتا، وهي زاوية مقاسة بالتقدير الدائري"
+                },
+                {
+                    "name": "IMCONJUGATE",
+                    "cat": "Engineering",
+                    "desc": "إرجاع المرافق المركب لعدد مركب"
+                },
+                {
+                    "name": "IMCOS",
+                    "cat": "Engineering",
+                    "desc": "إرجاع جيب التمام لعدد مركب"
+                },
+                {
+                    "name": "IMCOSH",
+                    "cat": "Engineering",
+                    "desc": "إرجاع جيب التمام الزائدي لعدد مركب"
+                },
+                {
+                    "name": "IMCOT",
+                    "cat": "Engineering",
+                    "desc": "إرجاع ظل التمام لعدد مركب"
+                },
+                {
+                    "name": "IMCSC",
+                    "cat": "Engineering",
+                    "desc": "إرجاع قاطع التمام لعدد مركب"
+                },
+                {
+                    "name": "IMCSCH",
+                    "cat": "Engineering",
+                    "desc": "إرجاع قاطع التمام الزائدي لعدد مركب"
+                },
+                {
+                    "name": "IMDIV",
+                    "cat": "Engineering",
+                    "desc": "إرجاع حاصل قسمة رقمين مركبين"
+                },
+                {
+                    "name": "IMEXP",
+                    "cat": "Engineering",
+                    "desc": "إرجاع الأس الخاص بعدد مركب"
+                },
+                {
+                    "name": "IMLN",
+                    "cat": "Engineering",
+                    "desc": "إرجاع اللوغاريتم العادي لعدد مركب"
+                },
+                {
+                    "name": "IMLOG10",
+                    "cat": "Engineering",
+                    "desc": "إرجاع لوغاريتم ذي أساس 10 لعدد مركب"
+                },
+                {
+                    "name": "IMLOG2",
+                    "cat": "Engineering",
+                    "desc": "إرجاع لوغاريتم ذي أساس 2 لعدد مركب"
+                },
+                {
+                    "name": "IMPOWER",
+                    "cat": "Engineering",
+                    "desc": "إرجاع عدد مركب تم رفعه لأس عدد صحيح"
+                },
+                {
+                    "name": "IMPRODUCT",
+                    "cat": "Engineering",
+                    "desc": "إرجاع ناتج الأعداد المركبة"
+                },
+                {
+                    "name": "IMREAL",
+                    "cat": "Engineering",
+                    "desc": "إرجاع المُعامل الحقيقي لعدد مركب"
+                },
+                {
+                    "name": "IMSEC",
+                    "cat": "Engineering",
+                    "desc": "إرجاع قاطع المنحنى لعدد مركب"
+                },
+                {
+                    "name": "IMSECH",
+                    "cat": "Engineering",
+                    "desc": "إرجاع قاطع المنحنى الزائدي لعدد مركب"
+                },
+                {
+                    "name": "IMSIN",
+                    "cat": "Engineering",
+                    "desc": "إرجاع جيب الزاوية لعدد مركب"
+                },
+                {
+                    "name": "IMSINH",
+                    "cat": "Engineering",
+                    "desc": "إرجاع جيب الزاوية الزائدي لعدد مركب"
+                },
+                {
+                    "name": "IMSQRT",
+                    "cat": "Engineering",
+                    "desc": "إرجاع الجذر التربيعي لعدد مركب"
+                },
+                {
+                    "name": "IMSUB",
+                    "cat": "Engineering",
+                    "desc": "إرجاع الفرق بين عددين مركبين"
+                },
+                {
+                    "name": "IMSUM",
+                    "cat": "Engineering",
+                    "desc": "إرجاع مجموع الأعداد المركبة"
+                },
+                {
+                    "name": "IMTAN",
+                    "cat": "Engineering",
+                    "desc": "إرجاع ظل الزاوية الخاص بعدد مركب"
+                },
+                {
+                    "name": "INDEX",
+                    "cat": "Lookup and reference",
+                    "desc": "استخدام فهرس لاختيار قيمة من مرجع أو صفيف"
+                },
+                {
+                    "name": "INDIRECT",
+                    "cat": "Lookup and reference",
+                    "desc": "إرجاع مرجع مُشار إليه بقيمة نصية"
+                },
+                {
+                    "name": "INFO",
+                    "cat": "Information",
+                    "desc": "إرجاع معلومات حول بيئة التشغيل الحاليةهذه الدالة غير متوفرة في Excel للويب."
+                },
+                {
+                    "name": "INT",
+                    "cat": "Math and trigonometry",
+                    "desc": "تقريب رقم إلى الأدنى إلى أقرب عدد صحيح"
+                },
+                {
+                    "name": "INTERCEPT",
+                    "cat": "Statistical",
+                    "desc": "إرجاع نقطة تقاطع خط الانحدار الخطي"
+                },
+                {
+                    "name": "INTRATE",
+                    "cat": "Financial",
+                    "desc": "إرجاع نسبة الفائدة لورقة مالية تم استثمارها بشكل كامل"
+                },
+                {
+                    "name": "IPMT",
+                    "cat": "Financial",
+                    "desc": "إرجاع مدفوعات الفوائد لاستثمار في فترة زمنية معينة"
+                },
+                {
+                    "name": "IRR",
+                    "cat": "Financial",
+                    "desc": "إرجاع معدل العائد الداخلي لسلسلة من التدفقات النقدية"
+                },
+                {
+                    "name": "ISBLANK",
+                    "cat": "Information",
+                    "desc": "إرجاع TRUE إذا كانت القيمة فارغة"
+                },
+                {
+                    "name": "ISERR",
+                    "cat": "Information",
+                    "desc": "إرجاع TRUE إذا كانت القيمة أي قيمة خطأ غير ‎#N/A"
+                },
+                {
+                    "name": "ISERROR",
+                    "cat": "Information",
+                    "desc": "إرجاع TRUE إذا كانت القيمة أي قيمة خطأ"
+                },
+                {
+                    "name": "ISEVEN",
+                    "cat": "Information",
+                    "desc": "إرجاع القيمة TRUE إذا كان الرقم زوجياً"
+                },
+                {
+                    "name": "ISFORMULA",
+                    "cat": "Information",
+                    "desc": "إرجاع TRUE إذا كان هناك مرجع لخلية تحتوي على صيغة"
+                },
+                {
+                    "name": "ISLOGICAL",
+                    "cat": "Information",
+                    "desc": "إرجاع القيمة TRUE إذا كانت القيمة عبارة عن قيمة منطقية"
+                },
+                {
+                    "name": "ISNA",
+                    "cat": "Information",
+                    "desc": "إرجاع القيمة TRUE إذا كانت القيمة عبارة عن قيمة الخطأ ‎#N/A"
+                },
+                {
+                    "name": "ISNONTEXT",
+                    "cat": "Information",
+                    "desc": "إرجاع القيمة TRUE إذا لم تكن القيمة نصاً"
+                },
+                {
+                    "name": "ISNUMBER",
+                    "cat": "Information",
+                    "desc": "إرجاع القيمة TRUE إذا كانت القيمة رقماً"
+                },
+                {
+                    "name": "ISODD",
+                    "cat": "Information",
+                    "desc": "ترجع القيمة TRUE إذا كان الرقم فردياً"
+                },
+                {
+                    "name": "ISOMITTED",
+                    "cat": "Information",
+                    "desc": "تتحقق من عدم وجود القيمة في LAMBDA وترجع TRUE أو FALSE"
+                },
+                {
+                    "name": "ISREF",
+                    "cat": "Information",
+                    "desc": "إرجاع القيمة TRUE إذا كانت القيمة مرجعاً"
+                },
+                {
+                    "name": "ISTEXT",
+                    "cat": "Information",
+                    "desc": "إرجاع القيمة TRUE إذا كانت القيمة نصاً"
+                },
+                {
+                    "name": "CEILING",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع رقم تم تقريبه إلى الأعلى، إلى أقرب عدد صحيح أو إلى أقرب مضاعف ذي أهمية"
+                },
+                {
+                    "name": "ISOWEEKNUM",
+                    "cat": "Date and time",
+                    "desc": "إرجاع رقم أسبوع ISO من العام لتاريخ محدد"
+                },
+                {
+                    "name": "ISPMT",
+                    "cat": "Financial",
+                    "desc": "حساب الفائدة المدفوعة خلال فترة معينة للاستثمار"
+                },
+                {
+                    "name": "JIS",
+                    "cat": "Text",
+                    "desc": "تغيير الأحرف نصفية العرض (مفردة البايت) في سلسلة أحرف إلى أحرف كاملة العرض (مزدوجة البايت)"
+                },
+                {
+                    "name": "KURT",
+                    "cat": "Statistical",
+                    "desc": "ترجع تفرطح مجموعة البيانات"
+                },
+                {
+                    "name": "LAMBDA",
+                    "cat": "Logical",
+                    "desc": "تنشئ دالات مخصصة قابلة لإعادة الاستخدام وتتصل بها باسم مألوف"
+                },
+                {
+                    "name": "LARGE",
+                    "cat": "Statistical",
+                    "desc": "إرجاع ترتيب القيم الكبرى في مجموعة بيانات"
+                },
+                {
+                    "name": "LCM",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع أقل مضاعف مشترك"
+                },
+                {
+                    "name": "وLEFTB",
+                    "cat": "Text",
+                    "desc": "إرجاع الأحرف الموجودة في أقصى اليسار من قيمة نصية"
+                },
+                {
+                    "name": "وLENB",
+                    "cat": "Text",
+                    "desc": "ترجع عدد الأحرف في سلسلة نصية"
+                },
+                {
+                    "name": "LET",
+                    "cat": "Logical",
+                    "desc": "تعيّن الأسماء إلى نتائج الحساب"
+                },
+                {
+                    "name": "LINEST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع معلمات اتجاه خطي"
+                },
+                {
+                    "name": "LN",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع اللوغاريتم العادي لأحد الأرقام"
+                },
+                {
+                    "name": "LOG",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع لوغاريتم رقم إلى أساس معين"
+                },
+                {
+                    "name": "LOG10",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع لوغاريتم ذي أساس 10 لأحد الأرقام"
+                },
+                {
+                    "name": "LOGEST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع معلمات اتجاه أسي"
+                },
+                {
+                    "name": "LOGINV",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع عكس التوزيع اللوغاريتمي العادي التراكمي"
+                },
+                {
+                    "name": "DIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع التوزيع اللوغاريتمي الطبيعي التراكمي"
+                },
+                {
+                    "name": "LOGNORMDIST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع التوزيع اللوغاريتمي الطبيعي التراكمي"
+                },
+                {
+                    "name": "INV",
+                    "cat": "Statistical",
+                    "desc": "إرجاع عكس التوزيع اللوغاريتمي العادي التراكمي"
+                },
+                {
+                    "name": "LOOKUP",
+                    "cat": "Lookup and reference",
+                    "desc": "البحث عن قيم في خط متجه أو صفيف"
+                },
+                {
+                    "name": "LOWER",
+                    "cat": "Text",
+                    "desc": "تحول نص إلى أحرف صغيرة"
+                },
+                {
+                    "name": "MAKEARRAY",
+                    "cat": "Logical",
+                    "desc": "ترجع صفيف محسوب بحجم صف وعمود محددين، عن طريق تطبيق LAMBDA"
+                },
+                {
+                    "name": "MAP",
+                    "cat": "Logical",
+                    "desc": "ترجع صفيف تم تشكيله بتعيين كل قيمة في الصفيف (الصفائف) إلى قيمة جديدة عن طريق تطبيق LAMBDA لإنشاء قيمة جديدة"
+                },
+                {
+                    "name": "MATCH",
+                    "cat": "Lookup and reference",
+                    "desc": "البحث عن قيم في مرجع أو صفيف"
+                },
+                {
+                    "name": "MAX",
+                    "cat": "Statistical",
+                    "desc": "إرجاع القيمة القصوى في قائمة وسيطات"
+                },
+                {
+                    "name": "MAXA",
+                    "cat": "Statistical",
+                    "desc": "إرجاع القيمة القصوى في قائمة وسيطات، بما في ذلك الأرقام والنصوص والقيم المنطقية"
+                },
+                {
+                    "name": "MAXIFS",
+                    "cat": "Statistical",
+                    "desc": "إرجاع القيمة القصوى بين الخلايا المحددة بمجموعة معينة من الشروط أو المعايير"
+                },
+                {
+                    "name": "MDETERM",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع محدد المصفوفة لصفيف"
+                },
+                {
+                    "name": "MDURATION",
+                    "cat": "Financial",
+                    "desc": "إرجاع فترة ماكولي المعدلة للورقة المالية قيمة سعر تعادل مفترض يقدر بـ 100$."
+                },
+                {
+                    "name": "MEDIAN",
+                    "cat": "Statistical",
+                    "desc": "إرجاع الوسيط للأرقام المعينة"
+                },
+                {
+                    "name": "وMIDB",
+                    "cat": "Text",
+                    "desc": "إرجاع عدد معين من الأحرف من سلسلة نصية بدءاً من الموضع الذي تحدده"
+                },
+                {
+                    "name": "MIN",
+                    "cat": "Statistical",
+                    "desc": "إرجاع القيمة الدنيا في قائمة وسيطات"
+                },
+                {
+                    "name": "MINIFS",
+                    "cat": "Statistical",
+                    "desc": "إرجاع أدنى قيمة بين الخلايا المحددة بمجموعة معينة من الشروط أو المعايير."
+                },
+                {
+                    "name": "MINA",
+                    "cat": "Statistical",
+                    "desc": "إرجاع أصغر قيمة في قائمة وسيطات، بما في ذلك الأرقام والنصوص والقيم المنطقية"
+                },
+                {
+                    "name": "MINUTE",
+                    "cat": "Date and time",
+                    "desc": "تحويل رقم تسلسلي إلى دقيقة"
+                },
+                {
+                    "name": "MINVERSE",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع عكس المصفوفة لصفيف"
+                },
+                {
+                    "name": "MIRR",
+                    "cat": "Financial",
+                    "desc": "إرجاع النسبة الداخلية للعائد الذي يتم فيه توفير التدفقات المالية الموجبة والسالبة بنسب مختلفة"
+                },
+                {
+                    "name": "MMULT",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع المصفوفة الناتجة عن ضرب صفيفين"
+                },
+                {
+                    "name": "MOD",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع الباقي من القسمة"
+                },
+                {
+                    "name": "MODE",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع القيمة الأكثر شيوعاً في مجموعة بياناتفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "MULT",
+                    "cat": "Statistical",
+                    "desc": "إرجاع صفيف عمودي للقيم الأكثر تكراراً أو الأكثر ظهوراً في صفيف أو نطاق من البيانات"
+                },
+                {
+                    "name": "SNGL",
+                    "cat": "Statistical",
+                    "desc": "إرجاع القيمة الأكثر شيوعاً في مجموعة بيانات"
+                },
+                {
+                    "name": "MONTH",
+                    "cat": "Date and time",
+                    "desc": "تحويل رقم تسلسلي إلى شهر"
+                },
+                {
+                    "name": "MROUND",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع رقم مقرب إلى المضاعف المطلوب"
+                },
+                {
+                    "name": "MULTINOMIAL",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع التسمية المتعددة لمجموعة من الأرقام"
+                },
+                {
+                    "name": "MUNIT",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع مصفوفة الوحدة للبعد المحدد"
+                },
+                {
+                    "name": "N",
+                    "cat": "Information",
+                    "desc": "إرجاع قيمة محولة لأحد الأرقام"
+                },
+                {
+                    "name": "NA",
+                    "cat": "Information",
+                    "desc": "إرجاع قيمة الخطأ ‎#N/A"
+                },
+                {
+                    "name": "DIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع التوزيع السالب ذي الحدين"
+                },
+                {
+                    "name": "NEGBINOMDIST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع التوزيع السالب ذي الحدينفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "NETWORKDAYS",
+                    "cat": "Date and time",
+                    "desc": "إرجاع عدد أيام العمل بين تاريخين"
+                },
+                {
+                    "name": "INTL",
+                    "cat": "Date and time",
+                    "desc": "إرجاع عدد أيام العمل بالكامل بين تاريخين باستخدام المعلمات لتحديد أيام عطلة الأسبوع وعددها"
+                },
+                {
+                    "name": "NOMINAL",
+                    "cat": "Financial",
+                    "desc": "إرجاع معدل الفائدة السنوية الاسمية"
+                },
+                {
+                    "name": "DIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع التوزيع التراكمي العادي"
+                },
+                {
+                    "name": "NORMDIST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع التوزيع التراكمي العاديفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "NORMINV",
+                    "cat": "Statistical",
+                    "desc": "إرجاع عكس التوزيع التراكمي العادي"
+                },
+                {
+                    "name": "INV",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع عكس التوزيع التراكمي العاديملاحظة: في Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "DIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع التوزيع التراكمي العادي القياسي"
+                },
+                {
+                    "name": "NORMSDIST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع التوزيع التراكمي العادي القياسيفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "INV",
+                    "cat": "Statistical",
+                    "desc": "إرجاع عكس التوزيع التراكمي العادي القياسي"
+                },
+                {
+                    "name": "NORMSINV",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع عكس التوزيع التراكمي العادي القياسيفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "NOT",
+                    "cat": "Logical",
+                    "desc": "عكس منطق الوسيطة الخاصة بها"
+                },
+                {
+                    "name": "NOW",
+                    "cat": "Date and time",
+                    "desc": "إرجاع الرقم التسلسلي للتاريخ والوقت الحالي"
+                },
+                {
+                    "name": "NPER",
+                    "cat": "Financial",
+                    "desc": "إرجاع عدد الفترات للاستثمار"
+                },
+                {
+                    "name": "NPV",
+                    "cat": "Financial",
+                    "desc": "إرجاع القيمة الحالية الصافية لاستثمار بالاستناد إلى سلسلة من التدفقات النقدية الدورية ومعدل الخصم"
+                },
+                {
+                    "name": "NUMBERVALUE",
+                    "cat": "Text",
+                    "desc": "تحويل نص إلى رقم بطريقة مستقلة عن الإعدادات المحلية"
+                },
+                {
+                    "name": "BIN",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم ثماني إلى رقم ثنائي"
+                },
+                {
+                    "name": "DEC",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم ثماني إلى رقم عشري"
+                },
+                {
+                    "name": "HEX",
+                    "cat": "Engineering",
+                    "desc": "تحويل رقم ثماني إلى رقم ست عشري"
+                },
+                {
+                    "name": "ODD",
+                    "cat": "Math and trigonometry",
+                    "desc": "تقريب رقم إلى الأعلى إلى أقرب رقم صحيح فردي"
+                },
+                {
+                    "name": "ODDFPRICE",
+                    "cat": "Financial",
+                    "desc": "إرجاع السعر لكل قيمة اسمية لـ 100$ لورقة مالية في جزء أول من فترة كلية"
+                },
+                {
+                    "name": "ODDFYIELD",
+                    "cat": "Financial",
+                    "desc": "إرجاع العائد الخاص بالورقة المالية في جزء أول من فترة كلية"
+                },
+                {
+                    "name": "ODDLPRICE",
+                    "cat": "Financial",
+                    "desc": "إرجاع السعر لكل قيمة اسمية لـ 100$ لورقة مالية في جزء أخير من فترة كلية"
+                },
+                {
+                    "name": "ODDLYIELD",
+                    "cat": "Financial",
+                    "desc": "إرجاع عائد ورقة مالية في جزء أخير من فترة كلية"
+                },
+                {
+                    "name": "OFFSET",
+                    "cat": "Lookup and reference",
+                    "desc": "إرجاع مرجع تمت إزاحته من مرجع معين"
+                },
+                {
+                    "name": "OR",
+                    "cat": "Logical",
+                    "desc": "إرجاع TRUE إذا كانت أية وسيطة TRUE"
+                },
+                {
+                    "name": "PDURATION",
+                    "cat": "Financial",
+                    "desc": "إرجاع عدد الفترات المطلوب بواسطة استثمار للوصول إلى قيمة محددة"
+                },
+                {
+                    "name": "PEARSON",
+                    "cat": "Statistical",
+                    "desc": "إرجاع مربع معامل الارتباط العزومي لحواصل الضرب"
+                },
+                {
+                    "name": "EXC",
+                    "cat": "Statistical",
+                    "desc": "إرجاع النسب المئوية القيمة المئوية k للقيم ضمن نطاق، حيث يقع k في النطاق من 0 إلى 1، حصراً"
+                },
+                {
+                    "name": "INC",
+                    "cat": "Statistical",
+                    "desc": "إرجاع النسب المئوية للقيم في نطاق"
+                },
+                {
+                    "name": "PERCENTILE",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع النسب المئوية للقيم في نطاقفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "EXC",
+                    "cat": "Statistical",
+                    "desc": "إرجاع رتبة القيمة في مجموعة بيانات كنسبة مئوية (من 0 إلى 1 حصراً) من مجموعة البيانات"
+                },
+                {
+                    "name": "INC",
+                    "cat": "Statistical",
+                    "desc": "إرجاع رتبة النسبة المئوية لقيمة في مجموعة بيانات"
+                },
+                {
+                    "name": "PERCENTRANK",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع رتبة النسبة المئوية لقيمة في مجموعة بياناتفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "PERMUT",
+                    "cat": "Statistical",
+                    "desc": "إرجاع عدد التباديل لعدد محدد من العناصر"
+                },
+                {
+                    "name": "PERMUTATIONA",
+                    "cat": "Statistical",
+                    "desc": "إرجاع عدد التباديل لعدد محدد من العناصر (مع التكرارات) التي يمكن تحديدها من إجمالي العناصر"
+                },
+                {
+                    "name": "PHI",
+                    "cat": "Statistical",
+                    "desc": "إرجاع قيمة دالة كثافة التوزيع القياسي العادي"
+                },
+                {
+                    "name": "PHONETIC",
+                    "cat": "Text",
+                    "desc": "استخراج الأحرف الصوتية (furigana) من سلسلة نصية"
+                },
+                {
+                    "name": "PI",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع قيمة pi"
+                },
+                {
+                    "name": "PMT",
+                    "cat": "Financial",
+                    "desc": "إرجاع الدفعات الدورية لمرتب دوري"
+                },
+                {
+                    "name": "DIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع توزيع Poisson"
+                },
+                {
+                    "name": "POISSON",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع توزيع Poissonفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "POWER",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع نتيجة عدد مرفوع إلى أس"
+                },
+                {
+                    "name": "PPMT",
+                    "cat": "Financial",
+                    "desc": "إرجاع المدفوعات على رأس مال لاستثمار في فترة زمنية معينة"
+                },
+                {
+                    "name": "PRICE",
+                    "cat": "Financial",
+                    "desc": "إرجاع السعر لكل قيمة اسمية لـ 100 ر. س. لورقة مالية يستحق عنها فائدة دورية"
+                },
+                {
+                    "name": "PRICEDISC",
+                    "cat": "Financial",
+                    "desc": "إرجاع القيمة الاسمية لسعر كل 100 ر. س. لورقة مالية ذات خصم"
+                },
+                {
+                    "name": "PRICEMAT",
+                    "cat": "Financial",
+                    "desc": "إرجاع السعر لكل قيمة اسمية لـ 100$ لورقة مالية تُدفع فائدتها عند الاستحقاق"
+                },
+                {
+                    "name": "PROB",
+                    "cat": "Statistical",
+                    "desc": "إرجاع احتمال وقوع قيم النطاق بين حدين"
+                },
+                {
+                    "name": "PRODUCT",
+                    "cat": "Math and trigonometry",
+                    "desc": "ضرب الوسيطات الخاصة بالدالة"
+                },
+                {
+                    "name": "PROPER",
+                    "cat": "Text",
+                    "desc": "تغيير الحرف الأول إلى حرف كبير في كل كلمة من قيمة نصية"
+                },
+                {
+                    "name": "PV",
+                    "cat": "Financial",
+                    "desc": "إرجاع القيمة الحالية للاستثمار"
+                },
+                {
+                    "name": "QUARTILE",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع ربع مجموعة بياناتفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "EXC",
+                    "cat": "Statistical",
+                    "desc": "إرجاع ربع مجموعة البيانات، استناداً إلى قيم النسب المئوية من 0 إلى 1 حصراً"
+                },
+                {
+                    "name": "INC",
+                    "cat": "Statistical",
+                    "desc": "إرجاع ربع مجموعة بيانات"
+                },
+                {
+                    "name": "QUOTIENT",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع جزء العدد الصحيح الخاص بالقسمة"
+                },
+                {
+                    "name": "RADIANS",
+                    "cat": "Math and trigonometry",
+                    "desc": "تحويل الدرجات إلى التقدير الدائري"
+                },
+                {
+                    "name": "RAND",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع رقم عشوائي بين 0 و1"
+                },
+                {
+                    "name": "RANDARRAY",
+                    "cat": "Math and trigonometry",
+                    "desc": "ترجع مصفوفة من الأرقام العشوائية بين 0 و1. على العكس، يمكنك تحديد عدد الصفوف والأعمدة التي يتعين ملؤها والحد الأدنى والحد الأقصى للقيم وما إذا كنت تريد إرجاع أعداد صحيحة أو قيم عشرية."
+                },
+                {
+                    "name": "RANDBETWEEN",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع رقم عشوائي بين الأرقام التي تحددها"
+                },
+                {
+                    "name": "AVG",
+                    "cat": "Statistical",
+                    "desc": "إرجاع رتبة رقم في قائمة الأرقام"
+                },
+                {
+                    "name": "EQ",
+                    "cat": "Statistical",
+                    "desc": "إرجاع رتبة رقم في قائمة الأرقام"
+                },
+                {
+                    "name": "RANK",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع رتبة رقم في قائمة الأرقامفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "RATE",
+                    "cat": "Financial",
+                    "desc": "إرجاع معدل الفائدة لكل فترة من فترات المرتب الدوري"
+                },
+                {
+                    "name": "RECEIVED",
+                    "cat": "Financial",
+                    "desc": "ترجع مقدار المبلغ الذي سيتم تلقيه عند تاريخ الاستحقاق لورقة مالية تم استثمارها بشكل كامل"
+                },
+                {
+                    "name": "REDUCE",
+                    "cat": "Logical",
+                    "desc": "تصغّر صفيف إلى قيمة متراكمة عن طريق تطبيق LAMBDA على كل قيمة وترجع القيمة الإجمالية في التراكمي"
+                },
+                {
+                    "name": "ID",
+                    "cat": "Add-in and Automation",
+                    "desc": "إرجاع معرّف التسجيل لمكتبة الارتباط الديناميكي (DLL) المحددة أو مورد التعليمات البرمجية الذي تم تسجيله مسبقاً"
+                },
+                {
+                    "name": "وREPLACEB",
+                    "cat": "Text",
+                    "desc": "استبدال الأحرف ضمن نص"
+                },
+                {
+                    "name": "REPT",
+                    "cat": "Text",
+                    "desc": "تكرار النص لعدد معين من المرات"
+                },
+                {
+                    "name": "وRIGHTB",
+                    "cat": "Text",
+                    "desc": "إرجاع الأحرف الموجودة في أقصى اليمين من قيمة نصية"
+                },
+                {
+                    "name": "ROMAN",
+                    "cat": "Math and trigonometry",
+                    "desc": "تحويل الأرقام العربية إلى رومانية على شكل نص"
+                },
+                {
+                    "name": "ROUND",
+                    "cat": "Math and trigonometry",
+                    "desc": "تقريب رقم إلى عدد خانات رقمية معين"
+                },
+                {
+                    "name": "ROUNDDOWN",
+                    "cat": "Math and trigonometry",
+                    "desc": "تقريب رقم للأسفل، باتجاه الصفر"
+                },
+                {
+                    "name": "ROUNDUP",
+                    "cat": "Math and trigonometry",
+                    "desc": "تقريب رقم للأعلى، بعيداً عن الصفر"
+                },
+                {
+                    "name": "ROW",
+                    "cat": "Lookup and reference",
+                    "desc": "إرجاع رقم الصف لمرجع"
+                },
+                {
+                    "name": "ROWS",
+                    "cat": "Lookup and reference",
+                    "desc": "إرجاع عدد الصفوف الموجودة في مرجع"
+                },
+                {
+                    "name": "RRI",
+                    "cat": "Financial",
+                    "desc": "إرجاع معدل فائدة يكون مكافئاً لنمو الاستثمار"
+                },
+                {
+                    "name": "RSQ",
+                    "cat": "Statistical",
+                    "desc": "إرجاع مربع معامل الارتباط العزومي لحواصل الضرب"
+                },
+                {
+                    "name": "RTD",
+                    "cat": "Lookup and reference",
+                    "desc": "تستردّ بيانات الوقت الحقيقي من برنامج يعتمد التنفيذ التلقائي لـ COM"
+                },
+                {
+                    "name": "SCAN",
+                    "cat": "Logical",
+                    "desc": "تمسح صفيف ضوئيا عن طريق تطبيق LAMBDA على كل قيمة وترجع صفيف يحتوي على كل قيمة وسيطة"
+                },
+                {
+                    "name": "وSEARCHB",
+                    "cat": "Text",
+                    "desc": "البحث عن إحدى القيم النصية داخل قيمة نصية أخرى (عدم تحسس حالة الأحرف)"
+                },
+                {
+                    "name": "SEC",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع قاطع المنحنى لزاوية"
+                },
+                {
+                    "name": "SECH",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع قاطع المنحنى الزائدي لزاوية"
+                },
+                {
+                    "name": "SECOND",
+                    "cat": "Date and time",
+                    "desc": "تحويل رقم تسلسلي إلى ثانية"
+                },
+                {
+                    "name": "SEQUENCE",
+                    "cat": "Math and trigonometry",
+                    "desc": "تتيح لك إنشاء قائمة الأرقام المتتالية في صفيف مثل 1، 2، 3، 4."
+                },
+                {
+                    "name": "SERIESSUM",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع مجموع سلسلة الأس استناداً إلى الصيغة"
+                },
+                {
+                    "name": "SHEET",
+                    "cat": "Information",
+                    "desc": "إرجاع رقم الورقة للورقة المشار إليها"
+                },
+                {
+                    "name": "SHEETS",
+                    "cat": "Information",
+                    "desc": "إرجاع عدد الأوراق في مرجع"
+                },
+                {
+                    "name": "SIGN",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع إشارة لأحد الأرقام"
+                },
+                {
+                    "name": "SIN",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع جيب الزاوية لزاوية معينة"
+                },
+                {
+                    "name": "SINH",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع جيب الزاوية الزائدي لأحد الأرقام"
+                },
+                {
+                    "name": "SKEW",
+                    "cat": "Statistical",
+                    "desc": "إرجاع تخالف التوزيع"
+                },
+                {
+                    "name": "P",
+                    "cat": "Statistical",
+                    "desc": "إرجاع تخالف التوزيع استناداً إلى محتوى: وصف لدرجة اللا تماثل لتوزيع حول وسطه"
+                },
+                {
+                    "name": "SLN",
+                    "cat": "Financial",
+                    "desc": "إرجاع الإهلاك الثابت لأصل في فترة زمنية واحدة"
+                },
+                {
+                    "name": "SLOPE",
+                    "cat": "Statistical",
+                    "desc": "إرجاع ميل خط الانحدار الخطي"
+                },
+                {
+                    "name": "SMALL",
+                    "cat": "Statistical",
+                    "desc": "إرجاع ترتيب القيم الصغرى في مجموعة بيانات"
+                },
+                {
+                    "name": "SORT",
+                    "cat": "Lookup and reference",
+                    "desc": "تقوم بفرز محتويات نطاق أو صفيف."
+                },
+                {
+                    "name": "SORTBY",
+                    "cat": "Lookup and reference",
+                    "desc": "تقوم بفرز محتويات نطاق أو صفيف استناداً إلى القيم في نطاق أو صفيف مقابل."
+                },
+                {
+                    "name": "SQRT",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع جذر تربيعي موجب"
+                },
+                {
+                    "name": "SQRTPI",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع الجذر التربيعي لـ (number * pi)"
+                },
+                {
+                    "name": "STANDARDIZE",
+                    "cat": "Statistical",
+                    "desc": "إرجاع قيمة مسوّاة"
+                },
+                {
+                    "name": "STOCKHISTORY",
+                    "cat": "Financial",
+                    "desc": "يسترجع البيانات التاريخية حول أداة مالية"
+                },
+                {
+                    "name": "STDEV",
+                    "cat": "Compatibility",
+                    "desc": "تقدير الانحراف المعياري استناداً إلى نموذج"
+                },
+                {
+                    "name": "P",
+                    "cat": "Statistical",
+                    "desc": "حساب الانحراف المعياري استناداً إلى المحتوى بأكمله"
+                },
+                {
+                    "name": "S",
+                    "cat": "Statistical",
+                    "desc": "تقدير الانحراف المعياري استناداً إلى نموذج"
+                },
+                {
+                    "name": "STDEVA",
+                    "cat": "Statistical",
+                    "desc": "تقدير الانحراف المعياري استناداً إلى نموذج، بما في ذلك الأرقام والنصوص والقيم المنطقية"
+                },
+                {
+                    "name": "STDEVP",
+                    "cat": "Compatibility",
+                    "desc": "حساب الانحراف المعياري استناداً إلى المحتوى بأكملهفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "STDEVPA",
+                    "cat": "Statistical",
+                    "desc": "حساب الانحراف المعياري استناداً إلى المحتوى بأكمله، بما في ذلك الأرقام والنصوص والقيم المنطقية"
+                },
+                {
+                    "name": "STEYX",
+                    "cat": "Statistical",
+                    "desc": "إرجاع الخطأ القياسي لقيم y المتوقعة وذلك من أجل كل قيمة x في انحدار"
+                },
+                {
+                    "name": "SUBSTITUTE",
+                    "cat": "Text",
+                    "desc": "استبدال نص قديم بنص جديد في سلسلة نصية"
+                },
+                {
+                    "name": "SUBTOTAL",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع مجموع فرعي في قائمة أو قاعدة بيانات"
+                },
+                {
+                    "name": "SUM",
+                    "cat": "Math and trigonometry",
+                    "desc": "جمع الوسيطات الخاصة بالدالة"
+                },
+                {
+                    "name": "SUMIF",
+                    "cat": "Math and trigonometry",
+                    "desc": "جمع الخلايا المحددة بواسطة معيار معين"
+                },
+                {
+                    "name": "SUMIFS",
+                    "cat": "Math and trigonometry",
+                    "desc": "جمع الخلايا الموجودة في نطاق والتي تفي بمعايير متعددة"
+                },
+                {
+                    "name": "SUMPRODUCT",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع مجموع المنتجات الخاص بمكونات الصفائف المتطابقة"
+                },
+                {
+                    "name": "SUMSQ",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع مجموع مربعات الوسيطات"
+                },
+                {
+                    "name": "MY2",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع مجموع الفوارق بين المربعات للقيم المناظرة في صفيفين"
+                },
+                {
+                    "name": "PY2",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع المجموع الخاص بمجموع مربعات قيم مناظرة في صفيفين"
+                },
+                {
+                    "name": "SUMXMY2",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع مجموع مربعات فوارق القيم المناظرة في صفيفين"
+                },
+                {
+                    "name": "SWITCH",
+                    "cat": "Logical",
+                    "desc": "تقييم تعبير مقابل الحصول على قائمة بالقيم وإرجاع النتيجة المطابقة للقيمة المطابقة الأولى. إذا لم يكن هناك أي تطابق، قد يتم إرجاع القيمة الافتراضية الاختيارية."
+                },
+                {
+                    "name": "SYD",
+                    "cat": "Financial",
+                    "desc": "إرجاع أرقام مجموع سنوات استهلاك أحد الأصول لفترة معيّنة"
+                },
+                {
+                    "name": "T",
+                    "cat": "Text",
+                    "desc": "تحويل الوسيطات الخاصة بالدالة إلى نص"
+                },
+                {
+                    "name": "TAN",
+                    "cat": "Math and trigonometry",
+                    "desc": "إرجاع ظل الزاوية لأحد الأرقام"
+                },
+                {
+                    "name": "TANH",
+                    "cat": "Math and trigonometry",
+                    "desc": "ترجع ظل الزاوية الزائدية لأحد الأرقام"
+                },
+                {
+                    "name": "TAKE",
+                    "cat": "Lookup and reference",
+                    "desc": "ترجع عدد محدد من الصفوف أو الأعمدة القريبة من بداية صفيف أو نهايته"
+                },
+                {
+                    "name": "TBILLEQ",
+                    "cat": "Financial",
+                    "desc": "إرجاع العائد المساوي للسند لإذن الخزانة"
+                },
+                {
+                    "name": "TBILLPRICE",
+                    "cat": "Financial",
+                    "desc": "إرجاع السعر لكل قيمة اسمية لـ 100$ لإذن خزانة"
+                },
+                {
+                    "name": "TBILLYIELD",
+                    "cat": "Financial",
+                    "desc": "إرجاع العائد الخاص بإذن الخزانة"
+                },
+                {
+                    "name": "DIST)",
+                    "cat": "Statistical",
+                    "desc": "إرجاع نقاط النسبة المئوية (الاحتمال) لتوزيع t للطالب"
+                },
+                {
+                    "name": "T",
+                    "cat": "Statistical",
+                    "desc": "إرجاع نقاط النسبة المئوية (الاحتمال) لتوزيع t للطالب"
+                },
+                {
+                    "name": "RT",
+                    "cat": "Statistical",
+                    "desc": "إرجاع توزيع t للطالب"
+                },
+                {
+                    "name": "TDIST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع توزيع t للطالب"
+                },
+                {
+                    "name": "TEXT",
+                    "cat": "Text",
+                    "desc": "تنسق رقم وتحوله إلى نص"
+                },
+                {
+                    "name": "TEXTAFTER",
+                    "cat": "Text",
+                    "desc": "ترجع النص الذي يقع بعد حرف أو سلسلة معينة"
+                },
+                {
+                    "name": "TEXTBEFORE",
+                    "cat": "Text",
+                    "desc": "ترجع النص الذي يقع قبل حرف أو سلسلة معينة"
+                },
+                {
+                    "name": "TEXTJOIN",
+                    "cat": "Text",
+                    "desc": "تدمج النص من نطاقات و/أو سلاسل متعددة"
+                },
+                {
+                    "name": "TEXTSPLIT",
+                    "cat": "Text",
+                    "desc": "تقسم السلاسل النصية باستخدام محددات الصفوف والأعمدة"
+                },
+                {
+                    "name": "TIME",
+                    "cat": "Date and time",
+                    "desc": "إرجاع الرقم التسلسلي لوقت معين"
+                },
+                {
+                    "name": "TIMEVALUE‏‎",
+                    "cat": "Date and time",
+                    "desc": "تحويل وقت في شكل نص إلى رقم تسلسلي"
+                },
+                {
+                    "name": "INV",
+                    "cat": "Statistical",
+                    "desc": "إرجاع القيمة t لتوزيع t للطالب كدالة الاحتمال ودرجات الحرية"
+                },
+                {
+                    "name": "T",
+                    "cat": "Statistical",
+                    "desc": "إرجاع عكس توزيع t للطالب"
+                },
+                {
+                    "name": "TINV",
+                    "cat": "Compatibility",
+                    "desc": "ترجع عكس توزيع T ستيودنت الاحتمالي"
+                },
+                {
+                    "name": "TOCOL",
+                    "cat": "Lookup and reference",
+                    "desc": "ترجع الصفيف في عمود واحد"
+                },
+                {
+                    "name": "TOROW",
+                    "cat": "Lookup and reference",
+                    "desc": "ترجع الصفيف في صف واحد"
+                },
+                {
+                    "name": "TODAY",
+                    "cat": "Date and time",
+                    "desc": "إرجاع الرقم التسلسلي لتاريخ اليوم"
+                },
+                {
+                    "name": "TRANSPOSE",
+                    "cat": "Lookup and reference",
+                    "desc": "إرجاع الموضع البديل لصفيف"
+                },
+                {
+                    "name": "TREND",
+                    "cat": "Statistical",
+                    "desc": "إرجاع القيم الموجودة على الاتجاه الخطي"
+                },
+                {
+                    "name": "TRIM",
+                    "cat": "Text",
+                    "desc": "إزالة المسافات من نص"
+                },
+                {
+                    "name": "TRIMMEAN",
+                    "cat": "Statistical",
+                    "desc": "إرجاع وسط الجزء الداخلي من مجموعة بيانات"
+                },
+                {
+                    "name": "TRUE",
+                    "cat": "Logical",
+                    "desc": "إرجاع القيمة المنطقية TRUE"
+                },
+                {
+                    "name": "TRUNC",
+                    "cat": "Math and trigonometry",
+                    "desc": "اقتطاع رقم إلى عدد صحيح"
+                },
+                {
+                    "name": "TEST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع الاحتمال المقترن باختبار الطالب t-test"
+                },
+                {
+                    "name": "TTEST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع الاحتمال المقترن باختبار الطالب t-testفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "TYPE",
+                    "cat": "Information",
+                    "desc": "إرجاع رقم يشير إلى نوع بيانات قيمة ما"
+                },
+                {
+                    "name": "UNICHAR",
+                    "cat": "Text",
+                    "desc": "ارجاع الحرف Unicode الذي تشير إليه قيمة رقمية معينة"
+                },
+                {
+                    "name": "UNICODE",
+                    "cat": "Text",
+                    "desc": "إرجاع الرقم (نقطة الرمز) المقابل للحرف الأول من النص"
+                },
+                {
+                    "name": "UNIQUE",
+                    "cat": "Lookup and reference",
+                    "desc": "تُرجع قائمة بالقيم الفريدة في قائمة أو نطاق"
+                },
+                {
+                    "name": "UPPER",
+                    "cat": "Text",
+                    "desc": "تحويل نص إلى أحرف كبيرة"
+                },
+                {
+                    "name": "VALUE",
+                    "cat": "Text",
+                    "desc": "تحول وسيطة نصية لرقم"
+                },
+                {
+                    "name": "VALUETOTEXT",
+                    "cat": "Text",
+                    "desc": "ترجع نص من أي قيمة محددة"
+                },
+                {
+                    "name": "VAR",
+                    "cat": "Compatibility",
+                    "desc": "تقدير التباين استناداً إلى نموذجفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "P",
+                    "cat": "Statistical",
+                    "desc": "حساب التباين استناداً إلى المحتوى بأكمله"
+                },
+                {
+                    "name": "S",
+                    "cat": "Statistical",
+                    "desc": "تقدير التباين استناداً إلى نموذج"
+                },
+                {
+                    "name": "VARA",
+                    "cat": "Statistical",
+                    "desc": "تقدير التباين استناداً إلى نموذج، بما في ذلك الأرقام والنصوص والقيم المنطقية"
+                },
+                {
+                    "name": "VARP",
+                    "cat": "Compatibility",
+                    "desc": "حساب التباين استناداً إلى المحتوى بأكملهفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "VARPA",
+                    "cat": "Statistical",
+                    "desc": "حساب التباين استناداً إلى المحتوى بأكمله، بما في ذلك الأرقام والنصوص والقيم المنطقية"
+                },
+                {
+                    "name": "VDB",
+                    "cat": "Financial",
+                    "desc": "إرجاع إهلاك الأصول لفترة محددة أو جزئية باستخدام أسلوب الاستهلاك المتناقص"
+                },
+                {
+                    "name": "VLOOKUP",
+                    "cat": "Lookup and reference",
+                    "desc": "تبحث في العمود الأول لصفيف والتنقل عبر خلايا الصف لإرجاع قيمة خلية"
+                },
+                {
+                    "name": "VSTACK",
+                    "cat": "Look and reference",
+                    "desc": "Look and reference:    تلحق الصفائف عموديا وفي تسلسل لإرجاع صفيف أكبر"
+                },
+                {
+                    "name": "WEBSERVICE",
+                    "cat": "Web",
+                    "desc": "إرجاع بيانات من خدمة ويب.هذه الدالة غير متوفرة في Excel للويب."
+                },
+                {
+                    "name": "WEEKDAY",
+                    "cat": "Date and time",
+                    "desc": "تحويل رقم تسلسلي إلى يوم من أيام الأسبوع"
+                },
+                {
+                    "name": "WEEKNUM",
+                    "cat": "Date and time",
+                    "desc": "تحويل رقم تسلسلي إلى رقم يمثل رقم الأسبوع في السنة"
+                },
+                {
+                    "name": "WEIBULL",
+                    "cat": "Compatibility",
+                    "desc": "حساب التباين استناداً إلى المحتوى بأكمله، بما في ذلك الأرقام والنصوص والقيم المنطقيةفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                },
+                {
+                    "name": "DIST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع توزيع Weibull"
+                },
+                {
+                    "name": "WORKDAY",
+                    "cat": "Date and time",
+                    "desc": "إرجاع الرقم التسلسلي لتاريخ يقع قبل عدد معين من أيام العمل أو بعده"
+                },
+                {
+                    "name": "INTL",
+                    "cat": "Date and time",
+                    "desc": "ترجع الرقم التسلسلي لتاريخ يقع قبل عدد أيام عمل معين أو بعده باستخدام معلمات لتحديد أيام نهايات الأسبوع وعددها"
+                },
+                {
+                    "name": "WRAPCOLS",
+                    "cat": "Look and reference",
+                    "desc": "Look and reference:    تلف الصف أو العمود المتوفر للقيم حسب الأعمدة بعد عدد محدد من العناصر"
+                },
+                {
+                    "name": "WRAPROWS",
+                    "cat": "Look and reference",
+                    "desc": "Look and reference:    تلفّ الصف أو العمود المتوفر للقيم حسب الصفوف بعد عدد محدد من العناصر"
+                },
+                {
+                    "name": "XIRR",
+                    "cat": "Financial",
+                    "desc": "إرجاع معدل العائد الداخلي لجدول تدفقات نقدية غير دورية بالضرورة"
+                },
+                {
+                    "name": "XLOOKUP",
+                    "cat": "Lookup and reference",
+                    "desc": "يبحث في نطاق أو مصفوفة، ويعيد عنصراً مطابقاً للمطابقة الأولى التي يعثر عليها. إذا لم يكن هناك تطابق، فيمكن لدالة XLOOKUP إرجاع أقرب تطابق (تقريبي)."
+                },
+                {
+                    "name": "XMATCH",
+                    "cat": "Lookup and reference",
+                    "desc": "تُرجع الموضع النسبي لعنصر في صفيف أو نطاق من الخلايا."
+                },
+                {
+                    "name": "XNPV",
+                    "cat": "Financial",
+                    "desc": "إرجاع القيمة الحالية الصافية لجدول تدفقات نقدية غير دورية بالضرورة"
+                },
+                {
+                    "name": "XOR",
+                    "cat": "Logical",
+                    "desc": "إرجاع Exclusive OR منطقية لكل الوسيطات"
+                },
+                {
+                    "name": "YEAR",
+                    "cat": "Date and time",
+                    "desc": "تحويل رقم تسلسلي إلى سنة"
+                },
+                {
+                    "name": "YEARFRAC‏‎",
+                    "cat": "Date and time",
+                    "desc": "إرجاع كسر السنة الذي يمثل عدد الأيام الكاملة التي تقع بين تاريخ البدء start_date وتاريخ الانتهاء end_date"
+                },
+                {
+                    "name": "YIELD",
+                    "cat": "Financial",
+                    "desc": "إرجاع العائد الخاص بالورقة المالية التي يستحق عنها فائدة دورية"
+                },
+                {
+                    "name": "YIELDDISC",
+                    "cat": "Financial",
+                    "desc": "إرجاع العائد السنوي لورقة مالية عليها خصم؛ على سبيل المثال، إذن الخزانة"
+                },
+                {
+                    "name": "YIELDMAT",
+                    "cat": "Financial",
+                    "desc": "إرجاع العائد السنوي لورقة مالية تُدفع فائدتها عند الاستحقاق"
+                },
+                {
+                    "name": "TEST",
+                    "cat": "Statistical",
+                    "desc": "إرجاع قيمة الاحتمال وحيد الطرف لـ z-test"
+                },
+                {
+                    "name": "ZTEST",
+                    "cat": "Compatibility",
+                    "desc": "إرجاع قيمة الاحتمال وحيد الطرف لـ z-testفي Excel 2007، هذه الدالة هي دالة إحصائية."
+                }
+            ] 
+        const container = document.getElementById('container');
+        const searchInput = document.getElementById('search');
+        const counter = document.getElementById('counter');
+
+        function display(data) {
+            container.innerHTML = data.map(f => `
+            <div class="func-card">
+                <div class="name-row">
+                    <span class="func-name">${f.name}</span>
+                    <span class="category-tag">${f.cat}</span>
+                </div>
+                <div class="func-desc">${f.desc}</div>
+                <div class="copy-btn">
+                    <button onclick="copyName('${f.name}')">نسخ الاسم 📋</button>
+                </div>
+            </div>
+        `).join('');
+            counter.innerText = `عدد الدوال المعروضة: ${data.length}`;
+        }
+
+        function copyName(txt) {
+            navigator.clipboard.writeText(txt);
+            alert('تم نسخ ' + txt);
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            const filtered = allFunctions.filter(f =>
+                f.name.toLowerCase().includes(val) ||
+                f.desc.includes(val)
+            );
+            display(filtered);
+        });
+
+        // العرض الأول
+        display(allFunctions);
+    </script>
+
+</body>
+
+</html>
