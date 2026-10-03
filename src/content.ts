@@ -10,7 +10,7 @@ export interface Content {
   hero: {
     profile_image: string | undefined; greeting: string; name: string; title: string; bio: string; identities: string[]; skills: string[];
     cv: string; cvLabel: string; work: string; phone: string; email: string; linkedin: string; github: string; whatsapp: string; photoAlt: string }
-  labels: { theme: string; lang: string; menu: string; toTop: string; skip: string; close: string }
+  labels: { theme: string; lang: string; menu: string; toTop: string; skip: string; close: string; prev: string; next: string }
 }
 export interface Sections {
   head: Record<'education' | 'experience' | 'knowledge' | 'certificates', Head>

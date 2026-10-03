@@ -57,7 +57,9 @@
         "menu": "القائمة",
         "toTop": "العودة للأعلى",
         "skip": "انتقل إلى المحتوى",
-        "close": "إغلاق"
+        "close": "إغلاق",
+        "prev": "السابق",
+        "next": "التالي"
       }
     },
     "sections": {
@@ -301,7 +303,7 @@
             "matplotlib"
           ],
           "repo": "Color_Extractor",
-          "img": "/assets/image/color_extractor.png"
+          "img": "/assets/image/Color_Extractor.png"
         },
         {
           "title": "صحيحين | صحيح البخاري ومسلم",
@@ -323,7 +325,7 @@
             "CSV"
           ],
           "repo": "Certificate_Maker",
-          "img": "/assets/image/certificate_maker.png"
+          "img": "/assets/image/Certificate_Maker.png"
         }
       ],
       "tools": [
@@ -516,7 +518,9 @@
         "menu": "Menu",
         "toTop": "Back to top",
         "skip": "Skip to content",
-        "close": "Close"
+        "close": "Close",
+        "prev": "Previous",
+        "next": "Next"
       }
     },
     "sections": {
@@ -761,7 +765,7 @@
             "matplotlib"
           ],
           "repo": "Color_Extractor",
-          "img": ""
+          "img": "/assets/image/Color_Extractor.png"
         },
         {
           "title": "Sahihain | Sahih Al-Bukhari & Muslim",
@@ -783,7 +787,7 @@
             "CSV"
           ],
           "repo": "Certificate_Maker",
-          "img": "/assets/image/certificate_maker.png"
+          "img": "/assets/image/Certificate_Maker.png"
         }
       ],
       "tools": [
