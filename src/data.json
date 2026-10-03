@@ -227,6 +227,19 @@
       "github": "GitHub",
       "allProjects": "كل المشاريع على GitHub",
       "projects": [
+        {
+          "title": "ماسح الباركود ",
+          "desc": "إنشاء وقراءة ومشاركة وحفظ رموز QR والباركود",
+          "tags": [
+            "Kotlin",
+            "Jetpack Compose",
+            "Room Db",
+            "ٍSQLite",
+            "Zxing"
+          ],
+          "repo": "KqrCode",
+          "img": "/assets/image/qrcode.png"
+        },
           {
           "title": "ادارة مؤسسة نوايف الجنوب",
           "desc": "تطبيق لادارة اعمال و موظفين مؤسسة نوايف الجنوب",
@@ -675,6 +688,19 @@
       "github": "GitHub",
       "allProjects": "All projects on GitHub",
       "projects": [
+                {
+          "title": "QR Code Scanner",
+          "desc": "Create, scan, share and store QR codes and barcodes",
+          "tags": [
+            "Kotlin",
+            "Jetpack Compose",
+            "Room Db",
+            "ٍSQLite",
+            "Zxing"
+          ],
+          "repo": "KqrCode",
+          "img": "/assets/image/qrcode.png"
+        },
         {
           "title": "Nawaif Al Janoub Organization Management",
           "desc": "An application for managing the business operations and employees of Nawaif Al Janoub Organization",
