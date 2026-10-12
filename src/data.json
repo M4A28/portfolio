@@ -211,6 +211,13 @@
           "org": "Udemy",
           "year": "2024",
           "img": "/assets/certs/database-design.jpg"
+        },
+
+{
+          "name": "شهادة اللغة الانجليزية",
+          "org": "EF SET",
+          "year": "2026",
+          "img": "/assets/certs/EF SET Certificate_page_1.png"
         }
       ]
     },
@@ -674,6 +681,12 @@
           "org": "Udemy",
           "year": "2024",
           "img": "/assets/certs/database-design.jpg"
+        },
+        {
+          "name": "English Language Certificate",
+          "org": "EF SET",
+          "year": "2026",
+          "img": "/assets/certs/EF SET Certificate_page_1.png"
         }
       ]
     },
