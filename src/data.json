@@ -43,8 +43,8 @@
         "bio": "أبني تجارب رقمية استثنائية تجمع بين الأداء العالي والتصميم المتقن. أؤمن أن التفاصيل الصغيرة تصنع الفرق الكبير.",
         "identities": [
           "مطوّر تطبيقات الجوال",
-          "مطوّر Kotlin",
-          "مطوّر Java",
+          "مطوّر Kotlin, Java",
+          
           "مطوّر Flutter"
         ],
         "cvLabel": "تحميل السيرة الذاتية",
@@ -511,8 +511,7 @@
         "bio": "I build exceptional digital experiences that combine high performance with refined design. I believe small details make the big difference.",
         "identities": [
           "Mobile App Developer",
-          "Kotlin Developer",
-          "Java Developer",
+          "Java and Kotlin Developer",
           "Flutter Developer"
         ],
         "cvLabel": "Download CV",
