@@ -394,19 +394,19 @@
         {
           "name": "أحمد محمد",
           "role": "مطوّر ويب",
-          "rating": 5,
+          "rating":4.5 ,
           "quote": "محوّل الأرقام يوفر عليّ دقائق مع كل فاتورة. بسيط وسريع ودقيق."
         },
         {
           "name": "سارة علي",
           "role": "مصممة جرافيك",
-          "rating": 5,
+          "rating": 4.4,
           "quote": "مستخرج الألوان يعطيني لوحات ألوان نظيفة من مراجعي مباشرة. يوفر الكثير من الوقت."
         },
         {
           "name": "خالد إبراهيم",
           "role": "طالب جامعي",
-          "rating": 5,
+          "rating": 4,
           "quote": "أقرأ الأحاديث كل يوم عبر تطبيق صحيحين. واجهته نظيفة وسريعة وسهلة."
         },
         {
@@ -861,19 +861,19 @@
         {
           "name": "Ahmed Mohamed",
           "role": "Web Developer",
-          "rating": 5,
+          "rating": 4.5,
           "quote": "The number converter saves me minutes on every invoice. Simple, fast and accurate."
         },
         {
           "name": "Sara Ali",
           "role": "Graphic Designer",
-          "rating": 5,
+          "rating": 4.4,
           "quote": "The color extractor gives me clean palettes straight from my references. A real time saver."
         },
         {
           "name": "Khaled Ibrahim",
           "role": "University Student",
-          "rating": 5,
+          "rating": 4,
           "quote": "I read Hadith on the Sahihain app every day. It is clean, fast and easy to use."
         },
         {
