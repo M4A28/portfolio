@@ -231,7 +231,7 @@
       "head": {
         "projects": {
           "title": "المشاريع",
-          "subtitle": "تطبيقات وأدوات مفتوحة المصدر"
+          "subtitle": "تطبيقات و ادوات قمت بصناعتها"
         },
         "tools": {
           "title": "الأدوات",
@@ -243,19 +243,6 @@
       "allProjects": "كل المشاريع على GitHub",
       "projects": [
         {
-          "title": "ماسح الباركود ",
-          "desc": "إنشاء وقراءة ومشاركة وحفظ رموز QR والباركود",
-          "tags": [
-            "Kotlin",
-            "Jetpack Compose",
-            "Room Db",
-            "ٍSQLite",
-            "Zxing"
-          ],
-          "repo": "KqrCode",
-          "img": "/assets/image/qrcode.png"
-        },
-          {
           "title": "ادارة مؤسسة نوايف الجنوب",
           "desc": "تطبيق لادارة اعمال و موظفين مؤسسة نوايف الجنوب",
           "tags": [
@@ -271,6 +258,20 @@
           "repo": "nawif_app",
           "img": "/assets/image/nawif_app.png"
         },
+        {
+          "title": "ماسح الباركود ",
+          "desc": "إنشاء وقراءة ومشاركة وحفظ رموز QR والباركود",
+          "tags": [
+            "Kotlin",
+            "Jetpack Compose",
+            "Room Db",
+            "ٍSQLite",
+            "Zxing"
+          ],
+          "repo": "KqrCode",
+          "img": "/assets/image/qrcode.png"
+        },
+          
         {
           "title": "العد التنازلي",
           "desc": "عدّ تنازلي للوقت المتبقي على مناسبتك",
@@ -400,7 +401,7 @@
         {
           "name": "أحمد محمد",
           "role": "مطوّر ويب",
-          "rating":4.5 ,
+          "rating":4 ,
           "quote": "محوّل الأرقام يوفر عليّ دقائق مع كل فاتورة. بسيط وسريع ودقيق."
         },
         {
@@ -705,7 +706,7 @@
       "head": {
         "projects": {
           "title": "Projects",
-          "subtitle": "Apps and open source tools"
+          "subtitle": "Apps and tools I built"
         },
         "tools": {
           "title": "Tools",
@@ -716,19 +717,6 @@
       "github": "GitHub",
       "allProjects": "All projects on GitHub",
       "projects": [
-                {
-          "title": "QR Code Scanner",
-          "desc": "Create, scan, share and store QR codes and barcodes",
-          "tags": [
-            "Kotlin",
-            "Jetpack Compose",
-            "Room Db",
-            "ٍSQLite",
-            "Zxing"
-          ],
-          "repo": "KqrCode",
-          "img": "/assets/image/qrcode.png"
-        },
         {
           "title": "Nawaif Al Janoub Organization Management",
           "desc": "An application for managing the business operations and employees of Nawaif Al Janoub Organization",
@@ -745,6 +733,20 @@
           "repo": "nawif_app",
           "img": "/assets/image/nawif_app.png"
         },
+                {
+          "title": "QR Code Scanner",
+          "desc": "Create, scan, share and store QR codes and barcodes",
+          "tags": [
+            "Kotlin",
+            "Jetpack Compose",
+            "Room Db",
+            "ٍSQLite",
+            "Zxing"
+          ],
+          "repo": "KqrCode",
+          "img": "/assets/image/qrcode.png"
+        },
+        
         {
           "title": "Count Down",
           "desc": "Count down time until event",
