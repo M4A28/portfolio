@@ -201,6 +201,12 @@
           "img": "/assets/certs/android-iti.jpg"
         },
         {
+          "name": "Automate the Boring Stuff with Python Programming",
+          "org": "Udemy",
+          "year": "2022",
+          "img": "/assets/certs/automate_python.jpg"
+        },
+        {
           "name": "الدليل الكامل لتطوير Flutter",
           "org": "Udemy",
           "year": "2023",
@@ -668,6 +674,12 @@
           "org": "ITI Institute",
           "year": "2023",
           "img": "/assets/certs/android-iti.jpg"
+        },
+        {
+          "name": "Automate the Boring Stuff with Python Programming",
+          "org": "Udemy",
+          "year": "2022",
+          "img": "/assets/certs/automate_python.jpg"
         },
         {
           "name": "The Complete Flutter Development Guide",
